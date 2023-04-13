@@ -19,9 +19,15 @@ public class Produto {
     private Long id;
     private String nome;
     private String valor;
+    private Integer estoque;
 
     public Produto(DadosProduto dados) {
         this.nome = dados.nome();
+        this.valor = dados.valor();
+        this.estoque = dados.estoque();
+    }
+
+    public void atualizar(AtualizarProduto dados) {
         this.valor = dados.valor();
     }
 }

@@ -1,13 +1,15 @@
 package vet.center.api.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import vet.center.api.domain.produto.DadosProduto;
-import vet.center.api.domain.produto.Produto;
-import vet.center.api.domain.produto.ProdutoRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
+import vet.center.api.domain.produto.*;
+
+
+import java.util.List;
 
 @RestController
 @RequestMapping("produto")
@@ -20,5 +22,22 @@ public class ProdutoController {
     public void cadastrar(@RequestBody DadosProduto dados) {
         repository.save(new Produto(dados));
     }
+
+    @GetMapping
+    public Page<ListProduto> listar(Pageable paginacao) {
+        return repository.findAll(paginacao).map(ListProduto::new);
+    }
+
+    @PutMapping
+    @Transactional
+    public void atualizar(@RequestBody @Valid AtualizarProduto dados) {
+
+        var produto = repository.getReferenceById(dados.id());
+
+        produto.atualizar(dados);
+
+    }
+
+
 
 }

@@ -26,6 +26,18 @@ public class Animal {
 
     private String raca;
 
+    private Sexo sexo;
+
+    private String peso;
+
+    private String idade;
+
+    private String cor;
+
+    private Temperamento temperamento;
+
+    private Boolean castrado;
+
     @ManyToOne
     @JoinColumn(name = "proprietario_id")
     private ProprietarioJPA proprietario;
@@ -36,5 +48,26 @@ public class Animal {
         this.especie = dados.especie();
         this.raca = dados.raca();
         this.proprietario = proprietario;
+        this.sexo = dados.sexo();
+        this.peso = dados.peso();
+        this.idade = dados.idade();
+        this.cor = dados.cor();
+        this.temperamento = dados.temperamento();
+        this.castrado = dados.castrado();
+
+    }
+
+    public void atualizar(AtualizarAnimal dados) {
+
+        if (dados.peso() != null) {
+            this.peso = dados.peso();
+        }
+        if (dados.idade() != null) {
+            this.idade = dados.idade();
+        }
+        if (dados.castrado() != null) {
+            this.castrado = dados.castrado();
+        }
+
     }
 }

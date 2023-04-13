@@ -27,6 +27,14 @@ public class ProprietarioJPA {
 
     private String telefone;
 
+    private String cpf;
+
+    private String nascimento;
+
+    private String sexo;
+
+    private String nome_mae;
+
     @Embedded
     private Endereco endereco;
 
@@ -37,6 +45,22 @@ public class ProprietarioJPA {
     public ProprietarioJPA(DadosProprietarios dados) {
         this.nome = dados.nome();
         this.telefone = dados.telefone();
+        this.cpf = dados.cpf();
+        this.nascimento = dados.nascimento();
+        this.sexo = dados.sexo();
+        this.nome_mae = dados.nomeMae();
         this.endereco = new Endereco(dados.endereco());
+    }
+
+    public void atualizar(AtualizarProprietario dados) {
+        if (dados.nome() != null) {
+            this.nome = dados.nome();
+        }
+        if (dados.telefone() != null) {
+            this.telefone = dados.telefone();
+        }
+        if (dados.endereco() != null) {
+            this.endereco.atualizarInformacoes(dados.endereco());
+        }
     }
 }
