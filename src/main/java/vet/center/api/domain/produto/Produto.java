@@ -21,13 +21,20 @@ public class Produto {
     private String valor;
     private Integer estoque;
 
+    private Boolean ativo;
+
     public Produto(DadosProduto dados) {
         this.nome = dados.nome();
         this.valor = dados.valor();
         this.estoque = dados.estoque();
+        this.ativo = true;
     }
 
     public void atualizar(AtualizarProduto dados) {
         this.valor = dados.valor();
+    }
+
+    public void excluir() {
+        this.ativo = false;
     }
 }

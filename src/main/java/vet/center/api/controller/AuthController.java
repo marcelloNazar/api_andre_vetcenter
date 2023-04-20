@@ -9,31 +9,30 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import vet.center.api.domain.usuario.DadosAutenticacao;
-import vet.center.api.domain.usuario.Usuario;
-import vet.center.api.infra.security.DadosTokenJWT;
-import vet.center.api.infra.security.TokenService;
+import vet.center.api.domain.user.DadosUser;
+import vet.center.api.domain.user.UserJPA;
+import vet.center.api.infra.security.DadosToken;
+import vet.center.api.infra.security.TokenServiceApi;
 
 @RestController
 @RequestMapping("/login")
-public class AutenticacaoController {
+public class AuthController {
 
     @Autowired
     private AuthenticationManager maneger;
 
     @Autowired
-    private TokenService tokenService;
+    private TokenServiceApi tokenService;
 
     @PostMapping
-    public ResponseEntity efetuarLogin(@RequestBody @Valid DadosAutenticacao dados) {
+    public ResponseEntity efetuarLogin(@RequestBody @Valid DadosUser dados) {
+        var authToken = new UsernamePasswordAuthenticationToken(dados.login(), dados.password());
+        var auth = maneger.authenticate(authToken);
 
-        var authenticationToken = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
+        var token = tokenService.gerarToken((UserJPA) auth.getPrincipal());
 
-        var authentication = maneger.authenticate(authenticationToken);
-
-        var tokenJWT = tokenService.gerarToken((Usuario) authentication.getPrincipal());
-
-        return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
+        return ResponseEntity.ok(new DadosToken(token));
     }
+
 
 }

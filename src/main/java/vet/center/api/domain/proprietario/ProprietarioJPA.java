@@ -35,6 +35,8 @@ public class ProprietarioJPA {
 
     private String nome_mae;
 
+    private Boolean ativo;
+
     @Embedded
     private Endereco endereco;
 
@@ -50,6 +52,7 @@ public class ProprietarioJPA {
         this.sexo = dados.sexo();
         this.nome_mae = dados.nomeMae();
         this.endereco = new Endereco(dados.endereco());
+        this.ativo = true;
     }
 
     public void atualizar(AtualizarProprietario dados) {
@@ -62,5 +65,9 @@ public class ProprietarioJPA {
         if (dados.endereco() != null) {
             this.endereco.atualizarInformacoes(dados.endereco());
         }
+    }
+
+    public void excluir() {
+        this.ativo = false;
     }
 }

@@ -38,6 +38,8 @@ public class Animal {
 
     private Boolean castrado;
 
+    private Boolean ativo;
+
     @ManyToOne
     @JoinColumn(name = "proprietario_id")
     private ProprietarioJPA proprietario;
@@ -54,6 +56,7 @@ public class Animal {
         this.cor = dados.cor();
         this.temperamento = dados.temperamento();
         this.castrado = dados.castrado();
+        this.ativo = true;
 
     }
 
@@ -69,5 +72,9 @@ public class Animal {
             this.castrado = dados.castrado();
         }
 
+    }
+
+    public void excluir() {
+        this.ativo = false;
     }
 }

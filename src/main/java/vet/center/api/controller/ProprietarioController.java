@@ -4,10 +4,14 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 import vet.center.api.domain.animal.AtualizarAnimal;
+import vet.center.api.domain.animal.DadosDetalhadosAnimal;
 import vet.center.api.domain.animal.ListAnimal;
+import vet.center.api.domain.produto.DadosDetalhadosProduto;
 import vet.center.api.domain.proprietario.*;
 
 import java.util.List;
@@ -20,22 +24,51 @@ public class ProprietarioController {
     private ProprietarioRepository repository;
 
     @PostMapping
-    public void cadastrar(@RequestBody DadosProprietarios dados) {
-        repository.save(new ProprietarioJPA(dados));
+    public ResponseEntity cadastrar(@RequestBody DadosProprietarios dados, UriComponentsBuilder uriBuilder) {
+
+        var proprietario = new ProprietarioJPA(dados);
+        repository.save(proprietario);
+
+        var uri = uriBuilder.path("/proprietario/{id}").buildAndExpand(proprietario.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(new DadosDetalhadosProprietario(proprietario));
     }
 
     @GetMapping
-    public Page<ListProprietario> listar(Pageable paginacao) {
-        return repository.findAll(paginacao).map(ListProprietario::new);
+    public ResponseEntity<Page<ListProprietario>> listar(Pageable paginacao) {
+        var page = repository.findAllByAtivoTrue(paginacao).map(ListProprietario::new);
+        return ResponseEntity.ok(page);
     }
 
     @PutMapping
     @Transactional
-    public void atualizar(@RequestBody @Valid AtualizarProprietario dados) {
+    public ResponseEntity atualizar(@RequestBody @Valid AtualizarProprietario dados) {
 
         var proprietario = repository.getReferenceById(dados.id());
 
         proprietario.atualizar(dados);
+
+        return ResponseEntity.ok(new DadosDetalhadosProprietario(proprietario));
+
+    }
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity excluir(@PathVariable Long id) {
+
+        var proprietarioJPA = repository.getReferenceById(id);
+
+        proprietarioJPA.excluir();
+
+        return ResponseEntity.noContent().build();
+
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity detalhar(@PathVariable Long id) {
+
+        var proprietario = repository.getReferenceById(id);
+
+        return ResponseEntity.ok(new DadosDetalhadosProprietario(proprietario));
 
     }
 

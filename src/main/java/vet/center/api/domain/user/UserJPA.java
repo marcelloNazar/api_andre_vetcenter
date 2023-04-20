@@ -1,9 +1,9 @@
-package vet.center.api.domain.usuario;
+package vet.center.api.domain.user;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,13 +12,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@Table(name = "usuarios")
-@Entity(name = "Usuario")
-@Getter
+@Entity
+@Table(name = "users")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Usuario implements UserDetails {
+public class UserJPA implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,8 @@ public class Usuario implements UserDetails {
 
     private String login;
 
-    private String senha;
+    private String password;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -35,7 +36,7 @@ public class Usuario implements UserDetails {
 
     @Override
     public String getPassword() {
-        return senha;
+        return password;
     }
 
     @Override
