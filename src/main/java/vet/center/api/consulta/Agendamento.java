@@ -6,9 +6,13 @@ import vet.center.api.consulta.validacoes.ValidadorConsultas;
 import vet.center.api.domain.ValidacaoExeption;
 import vet.center.api.domain.animal.AnimalRepository;
 import vet.center.api.domain.produto.ProdutoRepository;
+import vet.center.api.domain.proprietario.ProprietarioRepository;
+import vet.center.api.domain.servico.ServicoRepository;
 import vet.center.api.domain.veterinario.VeterinarioRepository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class Agendamento {
@@ -23,7 +27,13 @@ public class Agendamento {
     private AnimalRepository animalRepository;
 
     @Autowired
+    private ProprietarioRepository proprietarioRepository;
+
+    @Autowired
     private ProdutoRepository produtoRepository;
+
+    @Autowired
+    private ServicoRepository servicoRepository;
 
     @Autowired
     private List<ValidadorConsultas> validadores;
@@ -47,9 +57,20 @@ public class Agendamento {
 
         var veterinario = veterinarioRepository.findById(dados.idVeterinario()).get();
         var animal = animalRepository.findById(dados.idAnimal()).get();
+        var proprietario = proprietarioRepository.findById(dados.idProprietario()).get();
         var produto = produtoRepository.findById(dados.idProduto()).get();
+        var servico = servicoRepository.findById(dados.idServico()).get();
 
-        var consulta = new Consulta(null, veterinario, animal, produto, dados.data());
+        Map<String, Object> result = new HashMap<>();
+        result.put("veterinario", veterinario);
+        result.put("animal", animal);
+        result.put("proprietario", proprietario);
+        result.put("produto", produto);
+        result.put("servico", servico);
+
+
+
+        var consulta = new Consulta(null, veterinario, animal, proprietario, produto, servico, dados.data());
 
 
 

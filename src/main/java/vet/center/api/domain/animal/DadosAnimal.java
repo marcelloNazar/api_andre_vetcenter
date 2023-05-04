@@ -3,7 +3,6 @@ package vet.center.api.domain.animal;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import vet.center.api.domain.proprietario.ProprietarioJPA;
 
 public record DadosAnimal(
 
@@ -25,8 +24,8 @@ public record DadosAnimal(
         Temperamento temperamento,
         @NotNull
         Boolean castrado,
-
-        ProprietarioJPA proprietario
+        @NotNull
+        Long proprietario_id
 ) {
 
 

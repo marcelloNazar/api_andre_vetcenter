@@ -10,7 +10,7 @@ public record ListProprietario(
         String sexo,
         String nomeMae) {
 
-    public ListProprietario(ProprietarioJPA proprietario) {
+    public ListProprietario(Proprietario proprietario) {
         this(proprietario.getId(), proprietario.getNome(), proprietario.getTelefone(), proprietario.getCpf(), proprietario.getNascimento(), proprietario.getSexo(), proprietario.getNome_mae());
     }
 

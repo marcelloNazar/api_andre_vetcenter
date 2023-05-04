@@ -8,16 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-import vet.center.api.domain.animal.AtualizarAnimal;
-import vet.center.api.domain.animal.DadosDetalhadosAnimal;
-import vet.center.api.domain.animal.ListAnimal;
-import vet.center.api.domain.produto.DadosDetalhadosProduto;
 import vet.center.api.domain.proprietario.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("proprietario")
+@RequestMapping("/proprietario")
 public class ProprietarioController {
 
     @Autowired
@@ -26,7 +20,7 @@ public class ProprietarioController {
     @PostMapping
     public ResponseEntity cadastrar(@RequestBody DadosProprietarios dados, UriComponentsBuilder uriBuilder) {
 
-        var proprietario = new ProprietarioJPA(dados);
+        var proprietario = new Proprietario(dados);
         repository.save(proprietario);
 
         var uri = uriBuilder.path("/proprietario/{id}").buildAndExpand(proprietario.getId()).toUri();

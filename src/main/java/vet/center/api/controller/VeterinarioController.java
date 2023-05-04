@@ -55,7 +55,7 @@ public class VeterinarioController {
 
         return ResponseEntity.noContent().build();
     }
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/{um_id}")
     public ResponseEntity detalhar(@PathVariable long id) {
         var veterinario = repository.getReferenceById(id);
 

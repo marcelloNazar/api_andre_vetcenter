@@ -3,18 +3,17 @@ package vet.center.api.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import vet.center.api.consulta.Agendamento;
 import vet.center.api.consulta.DadosConsulta;
-import vet.center.api.consulta.DadosDetalhados;
+import vet.center.api.domain.animal.ListAnimal;
 
 @RestController
-@RequestMapping("consultas")
+@RequestMapping("/consultas")
 public class ConsultaController {
 
     @Autowired
@@ -30,5 +29,4 @@ public class ConsultaController {
         return ResponseEntity.ok(dto);
 
     }
-
 }

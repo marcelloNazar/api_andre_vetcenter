@@ -9,14 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import vet.center.api.domain.animal.*;
-import vet.center.api.domain.proprietario.ProprietarioJPA;
+import vet.center.api.domain.proprietario.Proprietario;
 import vet.center.api.domain.proprietario.ProprietarioRepository;
 import vet.center.api.infra.exception.DataResourceNotFoundException;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("animal")
+@RequestMapping("/animal")
 public class AnimalController {
 
     @Autowired
@@ -24,11 +22,11 @@ public class AnimalController {
     @Autowired
     private ProprietarioRepository proprietarioRepository;
 
-    @PostMapping("/{proprietarioId}")
-    public ResponseEntity cadastrar(@RequestBody @Valid DadosAnimal dados, @PathVariable Long proprietarioId, UriComponentsBuilder uriBuilder) {
+    @PostMapping
+    public ResponseEntity cadastrar(@RequestBody @Valid DadosAnimal dados, UriComponentsBuilder uriBuilder) {
 
-        ProprietarioJPA proprietario = proprietarioRepository.findById(proprietarioId)
-                .orElseThrow(() -> new DataResourceNotFoundException("Proprietario não encontrado com ID: " + proprietarioId));
+        Proprietario proprietario = proprietarioRepository.findById(dados.proprietario_id())
+                .orElseThrow(() -> new DataResourceNotFoundException("Proprietario não encontrado com ID: " + dados.proprietario_id()));
 
         var animal = new Animal(dados, proprietario);
 
@@ -70,12 +68,12 @@ public class AnimalController {
 
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity detalhar(@PathVariable Long id) {
+    @GetMapping("/{proprietario_id}")
+    public ResponseEntity<Page<ListAnimal>> detalhar(@PathVariable Long proprietario_id, Pageable paginacao) {
 
-        var animal = repository.getReferenceById(id);
+        var page = repository.findByProprietarioId(proprietario_id, paginacao).map(ListAnimal::new);
 
-        return ResponseEntity.ok(new DadosDetalhadosAnimal(animal));
+        return ResponseEntity.ok().body(page);
 
     }
 

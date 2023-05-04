@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class ProprietarioJPA {
+public class Proprietario {
 
 
     @Id
@@ -44,7 +44,7 @@ public class ProprietarioJPA {
     private List<Animal> animais;
 
 
-    public ProprietarioJPA(DadosProprietarios dados) {
+    public Proprietario(DadosProprietarios dados) {
         this.nome = dados.nome();
         this.telefone = dados.telefone();
         this.cpf = dados.cpf();

@@ -16,7 +16,7 @@ import vet.center.api.domain.proprietario.DadosDetalhadosProprietario;
 import java.util.List;
 
 @RestController
-@RequestMapping("produto")
+@RequestMapping("/produto")
 public class ProdutoController {
 
     @Autowired

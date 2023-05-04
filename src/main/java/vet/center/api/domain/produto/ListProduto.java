@@ -4,9 +4,9 @@ public record ListProduto(
         Long id,
       String nome,
       String valor,
-      Integer estoque) {
+      Integer estoque, String descricao) {
 
     public ListProduto(Produto produto) {
-        this(produto.getId(), produto.getNome(), produto.getValor(), produto.getEstoque());
+        this(produto.getId(), produto.getNome(), produto.getValor(), produto.getEstoque(), produto.getDescricao());
     }
 }

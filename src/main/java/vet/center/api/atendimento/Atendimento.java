@@ -1,5 +1,4 @@
-package vet.center.api.consulta;
-
+package vet.center.api.atendimento;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,42 +11,34 @@ import vet.center.api.domain.proprietario.Proprietario;
 import vet.center.api.domain.servico.Servico;
 import vet.center.api.domain.veterinario.Veterinario;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-@Table(name = "consultas")
-@Entity(name = "Consulta")
+@Table(name = "atendimentos")
+@Entity(name = "Atendimento")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Consulta {
+public class Atendimento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "veterinario_id")
     private Veterinario veterinario;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "animal_id")
     private Animal animal;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "proprietario_id")
     private Proprietario proprietario;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "produto_id")
-    private Produto produto;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "servico_id")
-    private Servico servico;
-
-
-    private LocalDateTime data;
 
 
 }

@@ -9,6 +9,8 @@ public record DadosConsulta(
         Long idVeterinario,
         Long idAnimal,
         Long idProduto,
+        Long idProprietario,
+        Long idServico,
 
         @NotNull
         @Future

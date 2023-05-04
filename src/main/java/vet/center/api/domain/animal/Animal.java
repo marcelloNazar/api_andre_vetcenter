@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import vet.center.api.domain.proprietario.ProprietarioJPA;
+import vet.center.api.domain.proprietario.Proprietario;
 
 @Table(name = "animal")
 @Entity(name = "Animal")
@@ -42,10 +42,10 @@ public class Animal {
 
     @ManyToOne
     @JoinColumn(name = "proprietario_id")
-    private ProprietarioJPA proprietario;
+    private Proprietario proprietario;
 
 
-    public Animal(DadosAnimal dados, ProprietarioJPA proprietario) {
+    public Animal(DadosAnimal dados, Proprietario proprietario) {
         this.nome = dados.nome();
         this.especie = dados.especie();
         this.raca = dados.raca();
