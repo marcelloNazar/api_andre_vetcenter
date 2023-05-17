@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class   ProprietarioAnamnese {
 
+    private Long id;
     @Column(name = "proprietario_name")
     private String nome;
 

@@ -15,6 +15,7 @@ import vet.center.api.domain.animal.Sexo;
 @AllArgsConstructor
 public class AnimalAnamnese {
 
+    private Long id;
     @Column(name = "animal_name")
     private String nome;
     private String idade;

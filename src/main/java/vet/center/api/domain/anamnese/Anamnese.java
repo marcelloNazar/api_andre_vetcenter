@@ -25,14 +25,18 @@ public class Anamnese {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Embedded
-    private ProprietarioAnamnese proprietario;
+    @ManyToOne
+    @JoinColumn(name = "veterinario_id", nullable = false)
+    private Veterinario veterinario;
 
-    @Embedded
-    private AnimalAnamnese animal;
+    @ManyToOne
+    @JoinColumn(name = "proprietario_id", nullable = false)
+    private Proprietario proprietario;
 
-    @Embedded
-    private VeterinarioAnamnese veterinario;
+    @ManyToOne
+    @JoinColumn(name = "animal_id", nullable = false)
+    private Animal animal;
+
     private String anamnese;
     private String estado;
     private String mucosas;
@@ -40,11 +44,11 @@ public class Anamnese {
     private String tpc;
     private String turgorCutaneo;
     private String desidratacao;
-    private boolean ectoparasitas;
-    private boolean mioclonias;
+    private Boolean ectoparasitas;
+    private Boolean mioclonias;
     private String prurido;
-    private boolean vomito;
-    private boolean diarreia;
+    private Boolean vomito;
+    private Boolean diarreia;
     private String inapatencia;
     private String secrecoesPatologicas;
     private String calculoDentario;
@@ -59,8 +63,8 @@ public class Anamnese {
     private String cabecaPescoco;
     private String sistemaNervoso;
     private String sistemaLocomotor;
-    private boolean cansaco;
-    private boolean tosse;
+    private Boolean cansaco;
+    private Boolean tosse;
     private String pulso;
     private String fc;
     private String fr;
@@ -71,23 +75,11 @@ public class Anamnese {
     private String tratamento;
     private String retorno;
 
-    @ManyToOne
-    private Long veterinarioId;
-
-    @ManyToOne
-    private Long animalId;
-
-    @ManyToOne
-    private Long proprietarioId;
-
     private LocalDateTime data;
 
 
     public Anamnese(DadosAnamnese dados) {
 
-        this.proprietario = new ProprietarioAnamnese(dados.proprietario());
-        this.animal = new AnimalAnamnese(dados.animal());
-        this.veterinario = new VeterinarioAnamnese(dados.veterinario());
         this.anamnese = dados.anamnese();
         this.estado = dados.estado();
         this.mucosas = dados.mucosas();
@@ -125,9 +117,6 @@ public class Anamnese {
         this.prognostico = dados.prognostico();
         this.tratamento = dados.tratamento();
         this.retorno = dados.retorno();
-        this.veterinarioId = dados.veterinarioId();
-        this.animalId = dados.animalId();
-        this.proprietarioId = dados.proprietarioId();
         this.data = dados.data();
     }
 }

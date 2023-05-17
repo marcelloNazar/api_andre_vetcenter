@@ -5,6 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import vet.center.api.atendimento.Atendimento;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Table(name = "servicos")
 @Entity(name = "Servico")
@@ -23,6 +27,10 @@ public class Servico {
     private String descricao;
 
     private Boolean ativo;
+
+    @ManyToMany(mappedBy = "servicos")
+    private Set<Atendimento> atendimentos = new HashSet<>();
+
 
 
 
