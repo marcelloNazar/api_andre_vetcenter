@@ -1,7 +1,5 @@
 package vet.center.api.domain.anamnese;
 
-import vet.center.api.domain.veterinario.DadosVeterinario;
-
 import java.time.LocalDateTime;
 
 public record DadosAnamnese(

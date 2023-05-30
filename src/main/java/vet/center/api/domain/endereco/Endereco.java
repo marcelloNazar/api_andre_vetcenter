@@ -3,11 +3,12 @@ package vet.center.api.domain.endereco;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Embeddable
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Endereco {

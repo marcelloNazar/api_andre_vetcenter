@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -13,70 +14,43 @@ import vet.center.api.domain.proprietario.Proprietario;
 import vet.center.api.domain.proprietario.ProprietarioRepository;
 import vet.center.api.infra.exception.DataResourceNotFoundException;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/animal")
 public class AnimalController {
 
     @Autowired
-    private AnimalRepository repository;
-    @Autowired
-    private ProprietarioRepository proprietarioRepository;
+    private AnimalService animalService;
+
+    @GetMapping
+    public ResponseEntity<Page<Animal>> getAllAnimals(Pageable pageable) {
+        return ResponseEntity.ok().body(animalService.getAllAnimals(pageable));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Animal> getAnimalById(@PathVariable(value = "id") Long id) {
+        return ResponseEntity.ok().body(animalService.getAnimalById(id));
+    }
 
     @PostMapping
-    public ResponseEntity cadastrar(@RequestBody @Valid DadosAnimal dados, UriComponentsBuilder uriBuilder) {
-
-        Proprietario proprietario = proprietarioRepository.findById(dados.proprietario_id())
-                .orElseThrow(() -> new DataResourceNotFoundException("Proprietario não encontrado com ID: " + dados.proprietario_id()));
-
-        var animal = new Animal(dados, proprietario);
-
-        repository.save(animal);
-
-        var uri = uriBuilder.path("/animal/{id}").buildAndExpand(animal.getId()).toUri();
-
-        return ResponseEntity.created(uri).body(new DadosDetalhadosAnimal(animal));
-
-    }
-    @GetMapping
-    public ResponseEntity<Page<ListAnimal>> listar(Pageable paginacao) {
-        var page = repository.findAllByAtivoTrue(paginacao).map(ListAnimal::new);
-
-        return ResponseEntity.ok(page);
+    public ResponseEntity<Animal> createAnimal(@Valid @RequestBody AnimalDTO animal) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(animalService.createAnimal(animal));
     }
 
-    @PutMapping
-    @Transactional
-    public ResponseEntity atualizar(@RequestBody @Valid AtualizarAnimal dados) {
-
-        var animal = repository.getReferenceById(dados.id());
-
-        animal.atualizar(dados);
-
-        return ResponseEntity.ok(new DadosDetalhadosAnimal(animal));
-
+    @PutMapping("/{id}")
+    public ResponseEntity<Animal> updateAnimal(@PathVariable(value = "id") Long id, @RequestBody AnimalDTO animalDetails) {
+        return ResponseEntity.ok().body(animalService.updateAnimal(id, animalDetails));
     }
 
     @DeleteMapping("/{id}")
-    @Transactional
-    public ResponseEntity excluir(@PathVariable Long id) {
-
-        var animal = repository.getReferenceById(id);
-
-        animal.excluir();
-
-        return ResponseEntity.noContent().build();
-
+    public ResponseEntity<?> deleteAnimal(@PathVariable(value = "id") Long id) {
+        animalService.deleteAnimal(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @GetMapping("/{proprietario_id}")
-    public ResponseEntity<Page<ListAnimal>> detalhar(@PathVariable Long proprietario_id, Pageable paginacao) {
-
-        var page = repository.findByProprietarioId(proprietario_id, paginacao).map(ListAnimal::new);
-
-        return ResponseEntity.ok().body(page);
-
+    @GetMapping("/proprietario/{proprietarioId}")
+    public List<Animal> getAnimalsByProprietarioId(@PathVariable(value = "proprietarioId") Long proprietarioId) {
+        return animalService.getAnimalsByProprietarioId(proprietarioId);
     }
-
-
-
 }

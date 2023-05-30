@@ -7,14 +7,4 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface VeterinarioRepository extends JpaRepository<Veterinario, Long> {
 
-
-    Page<Veterinario> findAllByAtivoTrue(Pageable paginacao);
-
-    @Query("""
-            select m.ativo
-            from Veterinario m
-            where
-            m.id = :id
-            """)
-    Boolean findAtivoById(Long id);
 }

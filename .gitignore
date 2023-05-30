@@ -33,6 +33,5 @@ build/
 .vscode/
 
 
-/resources
-/.idea
-/build
+### Application Config ###
+/src/main/resources

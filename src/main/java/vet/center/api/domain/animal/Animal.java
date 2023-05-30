@@ -1,18 +1,21 @@
 package vet.center.api.domain.animal;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import vet.center.api.atendimento.Atendimento;
 import vet.center.api.domain.proprietario.Proprietario;
 
-@Table(name = "animal")
-@Entity(name = "Animal")
-@Getter
+import java.util.List;
+
+
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
+@Table(name = "animal")
+@Entity(name = "Animal")
 public class Animal {
 
     @Id
@@ -38,43 +41,15 @@ public class Animal {
 
     private Boolean castrado;
 
-    private Boolean ativo;
 
     @ManyToOne
-    @JoinColumn(name = "proprietario_id")
+    @JoinColumn(name = "proprietario_id", nullable = false)
+    @JsonManagedReference
     private Proprietario proprietario;
 
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @JsonBackReference
+    private List<Atendimento> atendimentos;
 
-    public Animal(DadosAnimal dados, Proprietario proprietario) {
-        this.nome = dados.nome();
-        this.especie = dados.especie();
-        this.raca = dados.raca();
-        this.proprietario = proprietario;
-        this.sexo = dados.sexo();
-        this.peso = dados.peso();
-        this.idade = dados.idade();
-        this.cor = dados.cor();
-        this.temperamento = dados.temperamento();
-        this.castrado = dados.castrado();
-        this.ativo = true;
-
-    }
-
-    public void atualizar(AtualizarAnimal dados) {
-
-        if (dados.peso() != null) {
-            this.peso = dados.peso();
-        }
-        if (dados.idade() != null) {
-            this.idade = dados.idade();
-        }
-        if (dados.castrado() != null) {
-            this.castrado = dados.castrado();
-        }
-
-    }
-
-    public void excluir() {
-        this.ativo = false;
-    }
 }

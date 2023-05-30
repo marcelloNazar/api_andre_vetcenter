@@ -9,8 +9,5 @@ import java.util.Optional;
 
 public interface AnimalRepository extends JpaRepository<Animal, Long> {
 
-
-    Page<Animal> findAllByAtivoTrue(Pageable paginacao);
-
-    Page<Animal> findByProprietarioId(Long proprietarioId, Pageable paginacao);
+    List<Animal> findByProprietarioId(Long proprietarioId);
 }

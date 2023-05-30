@@ -4,6 +4,7 @@ package vet.center.api.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,50 +18,34 @@ import java.util.Optional;
 public class AtendimentoController {
 
     @Autowired
-    private AtendimentoRepository atendimentoRepository;
-
-    @Autowired
-    private AtendimentoMapper atendimentoMapper;
-
+    private AtendimentoService atendimentoService;
 
     @PostMapping
-    public ResponseEntity<AtendimentoDTO> createAtendimento(@RequestBody AtendimentoDTO atendimentoDTO) {
-        Atendimento atendimento = atendimentoMapper.toEntity(atendimentoDTO);
-        Atendimento savedAtendimento = atendimentoRepository.save(atendimento);
-        return ResponseEntity.status(HttpStatus.CREATED).body(atendimentoMapper.toDto(savedAtendimento));
+    public ResponseEntity<Atendimento> createAtendimento(@RequestBody AtendimentoDTO atendimentoDTO) {
+        return new ResponseEntity<>(atendimentoService.createAtendimento(atendimentoDTO), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<Page<AtendimentoResponse>> getAllAtendimentos(
+    public ResponseEntity<Page<Atendimento>> getAllAtendimentos(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy) {
-
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(sortBy));
-        Page<Atendimento> atendimentos = atendimentoRepository.findAll(pageRequest);
-        Page<AtendimentoResponse> atendimentoDTOs = atendimentos.map(atendimentoMapper::toResponseDto);
-
-        return ResponseEntity.ok(atendimentoDTOs);
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return new ResponseEntity<>(atendimentoService.getAllAtendimentos(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AtendimentoDTO> getAtendimentoById(@PathVariable Long id) {
-        Optional<Atendimento> atendimento = atendimentoRepository.findById(id);
-        if (atendimento.isPresent()) {
-            return ResponseEntity.ok(atendimentoMapper.toDto(atendimento.get()));
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<Atendimento> getAtendimento(@PathVariable Long id) {
+        return new ResponseEntity<>(atendimentoService.getAtendimento(id), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AtendimentoDTO> updateAtendimento(@PathVariable Long id, @RequestBody AtendimentoDTO atendimentoDTO) {
-        Optional<Atendimento> atendimentoOpt = atendimentoRepository.findById(id);
-        if (atendimentoOpt.isPresent()) {
-            Atendimento atendimento = atendimentoOpt.get();
-            atendimentoMapper.updateEntity(atendimento, atendimentoDTO);
-            Atendimento updatedAtendimento = atendimentoRepository.save(atendimento);
-            return ResponseEntity.ok(atendimentoMapper.toDto(updatedAtendimento));
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<Atendimento> updateAtendimento(@PathVariable Long id, @RequestBody AtendimentoDTO atendimentoDTO) {
+        return new ResponseEntity<>(atendimentoService.updateAtendimento(id, atendimentoDTO), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAtendimento(@PathVariable Long id) {
+        atendimentoService.deleteAtendimento(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

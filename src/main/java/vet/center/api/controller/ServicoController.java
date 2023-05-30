@@ -3,7 +3,10 @@ package vet.center.api.controller;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -15,60 +18,37 @@ import vet.center.api.domain.servico.*;
 public class ServicoController {
 
     @Autowired
-    private ServicoRepository repository;
-
-    @PostMapping
-    public ResponseEntity cadastrar(@RequestBody DadosServico dados, UriComponentsBuilder uriBuilder) {
-
-        var servico = new Servico(dados);
-        repository.save(servico);
-
-        var uri = uriBuilder.path("/produto/{id}").buildAndExpand(servico.getId()).toUri();
-
-        return ResponseEntity.created(uri).body(new DadosDetalhadosServicos(servico));
-    }
+    private ServicoService servicoService;
 
     @GetMapping
-    public ResponseEntity<Page<ListServicos>> listar(Pageable paginacao) {
-        var page = repository.findAllByAtivoTrue(paginacao).map(ListServicos::new);
+    public ResponseEntity<Page<Servico>> getAllServicos(
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy) {
 
-        return ResponseEntity.ok(page);
-    }
-
-    @PutMapping
-    @Transactional
-    public ResponseEntity atualizar(@RequestBody @Valid AtualizarServico dados) {
-
-        var servico = repository.getReferenceById(dados.id());
-
-        servico.atualizar(dados);
-
-        return ResponseEntity.ok(new DadosDetalhadosServicos(servico));
-
-    }
-
-    @DeleteMapping("/{id}")
-    @Transactional
-    public ResponseEntity excluir(@PathVariable Long id) {
-
-        var produto = repository.getReferenceById(id);
-
-        produto.excluir();
-
-        return ResponseEntity.noContent().build();
-
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        return ResponseEntity.ok(servicoService.getAllServicos(pageable));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity detalhar(@PathVariable Long id) {
-
-        var servico = repository.getReferenceById(id);
-
-        return ResponseEntity.ok(new DadosDetalhadosServicos(servico));
-
+    public ResponseEntity<Servico> getServicoById(@PathVariable(value = "id") Long id) {
+        return ResponseEntity.ok(servicoService.getServicoById(id));
     }
 
+    @PostMapping
+    public ResponseEntity<Servico> createServico(@RequestBody Servico servico) {
+        return new ResponseEntity<>(servicoService.createServico(servico), HttpStatus.CREATED);
+    }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Servico> updateServico(@PathVariable(value = "id") Long id, @RequestBody Servico servicoDetails) {
+        return ResponseEntity.ok(servicoService.updateServico(id, servicoDetails));
+    }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteServico(@PathVariable(value = "id") Long id) {
+        servicoService.deleteServico(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
 }
