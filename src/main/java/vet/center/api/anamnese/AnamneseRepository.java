@@ -1,4 +1,4 @@
-package vet.center.api.domain.anamnese;
+package vet.center.api.anamnese;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

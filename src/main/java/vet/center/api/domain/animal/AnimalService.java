@@ -1,6 +1,7 @@
 package vet.center.api.domain.animal;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import vet.center.api.domain.proprietario.Proprietario;
 import vet.center.api.domain.proprietario.ProprietarioRepository;
+import vet.center.api.domain.proprietario.ProprietarioService;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,42 +19,16 @@ import java.util.Optional;
 public class AnimalService {
     @Autowired
     private AnimalRepository animalRepository;
-
     @Autowired
-    private ProprietarioRepository proprietarioRepository;
-
-    public Page<Animal> getAllAnimals(Pageable pageable) {
-        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("nome").ascending());
-        Page<Animal> animals = animalRepository.findAll(pageRequest);
-        animals.getContent().forEach(t -> t.getProprietario().getNome());
-        return animals;
-    }
-
-    public Animal getAnimalById(Long id) {
-        Optional<Animal> animalOpt = animalRepository.findById(id);
-        if(animalOpt.isPresent()) {
-            Animal animal = animalOpt.get();
-            animal.getProprietario().getNome();
-            return animal;
-        } else {
-            throw new EntityNotFoundException("Animal não encontrado");
-        }
-    }
+    private ProprietarioService proprietarioService;
 
     public Animal createAnimal(AnimalDTO animalDTO) {
-        Proprietario proprietario = proprietarioRepository.findById(animalDTO.getProprietarioId())
-                .orElseThrow(() -> new EntityNotFoundException("Proprietario não encontrado"));
         Animal animal = new Animal();
-        animal.setProprietario(proprietario);
-        animal.setNome(animalDTO.getNome());
-        animal.setEspecie(animalDTO.getEspecie());
-        animal.setRaca(animalDTO.getRaca());
-        animal.setSexo(animalDTO.getSexo());
-        animal.setPeso(animalDTO.getPeso());
-        animal.setIdade(animalDTO.getIdade());
-        animal.setCor(animalDTO.getCor());
-        animal.setTemperamento(animalDTO.getTemperamento());
-        animal.setCastrado(animalDTO.getCastrado());
+
+        animal.setProprietario(proprietarioService.getProprietarioById(animalDTO.getProprietarioId()));
+
+        BeanUtils.copyProperties(animalDTO, animal, "prorietarioId");
+
         return animalRepository.save(animal);
     }
 
@@ -87,16 +63,20 @@ public class AnimalService {
             animal.setCastrado(animalDetails.getCastrado());
         }
         if (animalDetails.getProprietarioId() != null) {
-            Proprietario proprietario = proprietarioRepository.findById(animalDetails.getProprietarioId())
-                    .orElseThrow(() -> new EntityNotFoundException("Proprietario não encontrado"));
+            Proprietario proprietario = proprietarioService.getProprietarioById(animalDetails.getProprietarioId());
             animal.setProprietario(proprietario);
         }
         return animalRepository.save(animal);
     }
 
+    public Page<Animal> getAllAnimals(Pageable pageable) {return animalRepository.findAll(pageable);}
+
+    public Animal getAnimalById(Long id) {
+        return animalRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Animal não encontrado"));
+    }
+
     public void deleteAnimal(Long id) {
-        Animal animal = getAnimalById(id);
-        animalRepository.delete(animal);
+        animalRepository.delete(getAnimalById(id));
     }
 
     public List<Animal> getAnimalsByProprietarioId(Long proprietarioId) {

@@ -1,5 +1,6 @@
 package vet.center.api.domain.veterinario;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import vet.center.api.domain.endereco.Endereco;
@@ -11,7 +12,8 @@ import vet.center.api.domain.endereco.Endereco;
 @Table(name = "veterinarios")
 @Entity(name = "Veterinario")
 public class Veterinario {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
     private String email;

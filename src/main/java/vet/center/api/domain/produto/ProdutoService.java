@@ -6,20 +6,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProdutoService {
-
     @Autowired
     private ProdutoRepository produtoRepository;
-
-    public Page<Produto> getAllProdutos(Pageable pageable) {
-        return produtoRepository.findAll(pageable);
-    }
-
-    public Produto getProdutoById(Long id) {
-        return produtoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado"));
-    }
 
     public Produto createProduto(Produto produto) {
         return produtoRepository.save(produto);
@@ -44,8 +36,17 @@ public class ProdutoService {
         return produtoRepository.save(produto);
     }
 
-    public void deleteProduto(Long id) {
-        Produto produto = getProdutoById(id);
-        produtoRepository.delete(produto);
+    public Page<Produto> getAllProdutos(Pageable pageable) {
+        return produtoRepository.findAll(pageable);
     }
+
+    public Produto getProdutoById(Long id) {
+        return produtoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Produto não encontrado"));
+    }
+
+    public void deleteProduto(Long id) {
+        produtoRepository.delete(getProdutoById(id));
+    }
+
+    public List<Produto> getProdutosByIds(List<Long> ids) {return (List<Produto>) produtoRepository.findAllById(ids);}
 }

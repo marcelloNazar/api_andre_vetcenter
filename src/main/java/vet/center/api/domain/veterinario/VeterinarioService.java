@@ -2,6 +2,8 @@ package vet.center.api.domain.veterinario;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vet.center.api.domain.endereco.Endereco;
 
@@ -9,18 +11,8 @@ import java.util.List;
 
 @Service
 public class VeterinarioService {
-
     @Autowired
     private VeterinarioRepository veterinarioRepository;
-
-    public List<Veterinario> getAllVeterinarios() {
-        return veterinarioRepository.findAll();
-    }
-
-    public Veterinario getVeterinarioById(Long id) {
-        return veterinarioRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Veterinario não encontrado"));
-    }
 
     public Veterinario createVeterinario(Veterinario veterinario) {
         return veterinarioRepository.save(veterinario);
@@ -78,8 +70,13 @@ public class VeterinarioService {
         return veterinarioRepository.save(veterinario);
     }
 
-    public void deleteVeterinario(Long id) {
-        Veterinario veterinario = getVeterinarioById(id);
-        veterinarioRepository.delete(veterinario);
+    public Page<Veterinario> getAllVeterinarios(Pageable pageable) {
+        return veterinarioRepository.findAll(pageable);
     }
+
+    public Veterinario getVeterinarioById(Long id) {
+        return veterinarioRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Veterinario não encontrado"));
+    }
+
+    public void deleteVeterinario(Long id) {veterinarioRepository.delete(getVeterinarioById(id));}
 }

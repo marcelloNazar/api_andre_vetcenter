@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import vet.center.api.atendimento.Atendimento;
 import vet.center.api.domain.animal.Animal;
 import vet.center.api.domain.endereco.Endereco;
 
@@ -42,10 +41,5 @@ public class Proprietario {
     @JsonIgnore
     @JsonBackReference
     private List<Animal> animais;
-
-    @OneToMany(mappedBy = "proprietario", cascade = CascadeType.ALL)
-    @JsonIgnore
-    @JsonBackReference
-    private List<Atendimento> atendimentos;
 
 }

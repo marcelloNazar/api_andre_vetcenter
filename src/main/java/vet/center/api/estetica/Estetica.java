@@ -1,28 +1,28 @@
-package vet.center.api.atendimento;
+package vet.center.api.estetica;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import vet.center.api.domain.animal.Animal;
 import vet.center.api.domain.produto.Produto;
-import vet.center.api.domain.proprietario.Proprietario;
 import vet.center.api.domain.servico.Servico;
 import vet.center.api.domain.veterinario.Veterinario;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-@Table(name = "atendimentos")
-@Entity(name = "Atendimento")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Atendimento {
+@Table(name = "estetica")
+@Entity
+public class Estetica {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,31 +30,37 @@ public class Atendimento {
 
     @ManyToOne
     @JoinColumn(name = "veterinario_id", nullable = false)
-    @JsonManagedReference
     private Veterinario veterinario;
 
     @ManyToOne
     @JoinColumn(name = "animal_id", nullable = false)
-    @JsonManagedReference
     private Animal animal;
 
     @ManyToMany
     @JoinTable(
-            name = "atendimento_produto",
-            joinColumns = @JoinColumn(name = "atendimento_id"),
+            name = "estetica_produto",
+            joinColumns = @JoinColumn(name = "estetica_id"),
             inverseJoinColumns = @JoinColumn(name = "produto_id"))
     @JsonManagedReference
     private List<Produto> produtos = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
-            name = "atendimento_servico",
-            joinColumns = @JoinColumn(name = "atendimento_id"),
+            name = "estetica_servico",
+            joinColumns = @JoinColumn(name = "estetica_id"),
             inverseJoinColumns = @JoinColumn(name = "servico_id"))
     @JsonManagedReference
     private List<Servico> servicos = new ArrayList<>();
 
-    private LocalDateTime dateTime;
+    private String recomendacaoConsulta;
+    private String observacao;
+    private String temperamento;
+    private Boolean sedativo;
+    private Boolean ouvido;
+    private Boolean pele;
+    private Boolean ectoparasitas;
+    private Boolean medicacao;
+    private LocalDateTime horaTermino;
     private BigDecimal total;
 
 }

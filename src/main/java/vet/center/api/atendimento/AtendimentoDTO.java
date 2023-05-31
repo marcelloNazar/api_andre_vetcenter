@@ -7,9 +7,7 @@ import java.util.List;
 
 @Data
 public class AtendimentoDTO {
-
     private Long veterinarioId;
-    private Long proprietarioId;
     private Long animalId;
     private List<Long> produtosIds;
     private List<Long> servicosIds;

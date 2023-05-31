@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import vet.center.api.domain.servico.*;
 
+import static org.springframework.http.HttpStatus.CREATED;
+
 @RestController
 @RequestMapping("/servico")
 public class ServicoController {
@@ -20,24 +22,23 @@ public class ServicoController {
     @Autowired
     private ServicoService servicoService;
 
+    @PostMapping
+    public ResponseEntity<Servico> createServico(@RequestBody Servico servico) {
+        return ResponseEntity.status(CREATED).body(servicoService.createServico(servico));
+    }
+
     @GetMapping
     public ResponseEntity<Page<Servico>> getAllServicos(
-            @RequestParam(defaultValue = "0") Integer pageNo,
-            @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy) {
-
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(defaultValue = "id") String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
         return ResponseEntity.ok(servicoService.getAllServicos(pageable));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Servico> getServicoById(@PathVariable(value = "id") Long id) {
         return ResponseEntity.ok(servicoService.getServicoById(id));
-    }
-
-    @PostMapping
-    public ResponseEntity<Servico> createServico(@RequestBody Servico servico) {
-        return new ResponseEntity<>(servicoService.createServico(servico), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -48,7 +49,6 @@ public class ServicoController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteServico(@PathVariable(value = "id") Long id) {
         servicoService.deleteServico(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
-
 }

@@ -6,12 +6,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vet.center.api.atendimento.*;
 
-import java.util.Optional;
+import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequestMapping("/atendimento")
@@ -22,30 +21,31 @@ public class AtendimentoController {
 
     @PostMapping
     public ResponseEntity<Atendimento> createAtendimento(@RequestBody AtendimentoDTO atendimentoDTO) {
-        return new ResponseEntity<>(atendimentoService.createAtendimento(atendimentoDTO), HttpStatus.CREATED);
+        return ResponseEntity.status(CREATED).body(atendimentoService.createAtendimento(atendimentoDTO));
     }
 
     @GetMapping
     public ResponseEntity<Page<Atendimento>> getAllAtendimentos(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return new ResponseEntity<>(atendimentoService.getAllAtendimentos(pageable), HttpStatus.OK);
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(defaultValue = "id") String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        return ResponseEntity.ok(atendimentoService.getAllAtendimentos(pageable));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Atendimento> getAtendimento(@PathVariable Long id) {
-        return new ResponseEntity<>(atendimentoService.getAtendimento(id), HttpStatus.OK);
+        return ResponseEntity.ok(atendimentoService.getAtendimentoById(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Atendimento> updateAtendimento(@PathVariable Long id, @RequestBody AtendimentoDTO atendimentoDTO) {
-        return new ResponseEntity<>(atendimentoService.updateAtendimento(id, atendimentoDTO), HttpStatus.OK);
+        return ResponseEntity.ok(atendimentoService.updateAtendimento(id, atendimentoDTO));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAtendimento(@PathVariable Long id) {
         atendimentoService.deleteAtendimento(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 }

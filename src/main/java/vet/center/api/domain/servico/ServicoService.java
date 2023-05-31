@@ -10,18 +10,8 @@ import java.util.List;
 
 @Service
 public class ServicoService {
-
     @Autowired
     private ServicoRepository servicoRepository;
-
-    public Page<Servico> getAllServicos(Pageable pageable) {
-        return servicoRepository.findAll(pageable);
-    }
-
-    public Servico getServicoById(Long id) {
-        return servicoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Servico não encontrado"));
-    }
 
     public Servico createServico(Servico servico) {
         return servicoRepository.save(servico);
@@ -43,8 +33,15 @@ public class ServicoService {
         return servicoRepository.save(servico);
     }
 
-    public void deleteServico(Long id) {
-        Servico servico = getServicoById(id);
-        servicoRepository.delete(servico);
+    public Page<Servico> getAllServicos(Pageable pageable) {
+        return servicoRepository.findAll(pageable);
     }
+
+    public Servico getServicoById(Long id) {
+        return servicoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Servico não encontrado"));
+    }
+
+    public void deleteServico(Long id) {servicoRepository.delete(getServicoById(id));}
+
+    public List<Servico> getServicosByIds(List<Long> ids) {return (List<Servico>) servicoRepository.findAllById(ids);}
 }
