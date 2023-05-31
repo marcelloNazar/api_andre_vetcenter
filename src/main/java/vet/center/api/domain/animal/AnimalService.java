@@ -4,12 +4,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import vet.center.api.domain.proprietario.Proprietario;
-import vet.center.api.domain.proprietario.ProprietarioRepository;
 import vet.center.api.domain.proprietario.ProprietarioService;
 
 import java.util.List;

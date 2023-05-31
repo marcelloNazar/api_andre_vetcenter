@@ -1,6 +1,5 @@
 package vet.center.api.domain.animal;
 
-
 import lombok.Data;
 
 @Data

@@ -5,13 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vet.center.api.domain.veterinario.Veterinario;
 import vet.center.api.domain.veterinario.*;
-
-import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
 

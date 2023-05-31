@@ -2,7 +2,6 @@ package vet.center.api.atendimento;
 
 import lombok.Data;
 
-
 import java.util.List;
 
 @Data

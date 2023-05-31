@@ -9,7 +9,6 @@ import vet.center.api.domain.endereco.Endereco;
 
 import java.util.List;
 
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

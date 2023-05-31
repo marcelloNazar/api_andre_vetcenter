@@ -1,21 +1,16 @@
 package vet.center.api.estetica;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import vet.center.api.domain.animal.AnimalRepository;
 import vet.center.api.domain.animal.AnimalService;
 import vet.center.api.domain.produto.Produto;
-import vet.center.api.domain.produto.ProdutoRepository;
 import vet.center.api.domain.produto.ProdutoService;
 import vet.center.api.domain.servico.Servico;
-import vet.center.api.domain.servico.ServicoRepository;
 import vet.center.api.domain.servico.ServicoService;
-import vet.center.api.domain.veterinario.VeterinarioRepository;
 import vet.center.api.domain.veterinario.VeterinarioService;
 
 import java.math.BigDecimal;
@@ -71,8 +66,13 @@ public class EsteticaService {
 
     public Estetica updateEstetica(Long id, EsteticaDTO esteticaDTO) {
         Estetica estetica = getEsteticaById(id);
-        estetica.setVeterinario(veterinarioService.getVeterinarioById(esteticaDTO.getVeterinarioId()));
-        estetica.setAnimal(animalService.getAnimalById(esteticaDTO.getAnimalId()));
+
+        if (esteticaDTO.getVeterinarioId() != null) {
+            estetica.setVeterinario(veterinarioService.getVeterinarioById(esteticaDTO.getVeterinarioId()));
+        }
+        if (esteticaDTO.getAnimalId() != null) {
+            estetica.setAnimal(animalService.getAnimalById(esteticaDTO.getAnimalId()));
+        }
 
         BigDecimal totalProdutos = BigDecimal.ZERO;
         if (esteticaDTO.getProdutosIds() != null) {
@@ -97,8 +97,33 @@ public class EsteticaService {
         BigDecimal total = totalProdutos.add(totalServicos);
         estetica.setTotal(total);
 
-        BeanUtils.copyProperties(esteticaDTO, estetica, "veterinarioId", "animalId", "produtosIds", "servicosIds");
-
+        if (esteticaDTO.getRecomendacaoConsulta() != null) {
+            estetica.setRecomendacaoConsulta(esteticaDTO.getRecomendacaoConsulta());
+        }
+        if (esteticaDTO.getObservacao() != null) {
+            estetica.setObservacao(esteticaDTO.getObservacao());
+        }
+        if (esteticaDTO.getTemperamento() != null) {
+            estetica.setTemperamento(esteticaDTO.getTemperamento());
+        }
+        if (esteticaDTO.getSedativo() != null) {
+            estetica.setSedativo(esteticaDTO.getSedativo());
+        }
+        if (esteticaDTO.getOuvido() != null) {
+            estetica.setOuvido(esteticaDTO.getOuvido());
+        }
+        if (esteticaDTO.getPele() != null) {
+            estetica.setPele(esteticaDTO.getPele());
+        }
+        if (esteticaDTO.getEctoparasitas() != null) {
+            estetica.setEctoparasitas(esteticaDTO.getEctoparasitas());
+        }
+        if (esteticaDTO.getMedicacao() != null) {
+            estetica.setMedicacao(esteticaDTO.getMedicacao());
+        }
+        if (esteticaDTO.getHoraTermino() != null) {
+            estetica.setHoraTermino(esteticaDTO.getHoraTermino());
+        }
 
         return esteticaRepository.save(estetica);
     }

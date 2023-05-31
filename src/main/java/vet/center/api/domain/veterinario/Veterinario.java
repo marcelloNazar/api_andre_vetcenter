@@ -1,6 +1,5 @@
 package vet.center.api.domain.veterinario;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import vet.center.api.domain.endereco.Endereco;

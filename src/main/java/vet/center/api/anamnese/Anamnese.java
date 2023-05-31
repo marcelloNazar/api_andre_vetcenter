@@ -3,13 +3,9 @@ package vet.center.api.anamnese;
 import jakarta.persistence.*;
 import lombok.*;
 import vet.center.api.domain.animal.Animal;
-import vet.center.api.domain.produto.Produto;
-import vet.center.api.domain.proprietario.Proprietario;
-import vet.center.api.domain.servico.Servico;
 import vet.center.api.domain.veterinario.Veterinario;
 
 import java.time.LocalDateTime;
-
 
 @Getter
 @Setter

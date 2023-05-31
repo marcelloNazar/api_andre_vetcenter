@@ -18,8 +18,8 @@ public class ApiApplication {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**") // Substitua com o caminho adequado para sua API, se necessário
-						.allowedOrigins("http://localhost:3000") // Adicione o domínio do servidor de desenvolvimento local
+				registry.addMapping("/**")
+						.allowedOrigins("http://localhost:3000")
 						.allowedMethods("GET", "POST")
 						.allowedHeaders("Content-Type");
 			}

@@ -6,15 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 import vet.center.api.domain.animal.*;
-import vet.center.api.domain.proprietario.Proprietario;
-import vet.center.api.domain.proprietario.ProprietarioRepository;
-import vet.center.api.infra.exception.DataResourceNotFoundException;
 
 import java.util.List;
 
@@ -32,7 +26,7 @@ public class AnimalController {
         return ResponseEntity.status(CREATED).body(animalService.createAnimal(animal));
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<Page<Animal>> getAllAnimals(
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "10") Integer size,

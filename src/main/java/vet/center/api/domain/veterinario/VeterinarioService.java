@@ -7,8 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vet.center.api.domain.endereco.Endereco;
 
-import java.util.List;
-
 @Service
 public class VeterinarioService {
     @Autowired

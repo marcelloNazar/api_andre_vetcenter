@@ -5,16 +5,13 @@ import jakarta.persistence.*;
 import lombok.*;
 import vet.center.api.domain.animal.Animal;
 import vet.center.api.domain.produto.Produto;
-import vet.center.api.domain.proprietario.Proprietario;
 import vet.center.api.domain.servico.Servico;
 import vet.center.api.domain.veterinario.Veterinario;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Table(name = "atendimentos")
 @Entity(name = "Atendimento")

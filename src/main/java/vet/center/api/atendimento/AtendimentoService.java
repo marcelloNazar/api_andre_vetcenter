@@ -4,16 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import vet.center.api.domain.animal.AnimalRepository;
 import vet.center.api.domain.animal.AnimalService;
 import vet.center.api.domain.produto.Produto;
-import vet.center.api.domain.produto.ProdutoRepository;
 import vet.center.api.domain.produto.ProdutoService;
-import vet.center.api.domain.proprietario.ProprietarioRepository;
 import vet.center.api.domain.servico.Servico;
-import vet.center.api.domain.servico.ServicoRepository;
 import vet.center.api.domain.servico.ServicoService;
-import vet.center.api.domain.veterinario.VeterinarioRepository;
 import vet.center.api.domain.veterinario.VeterinarioService;
 
 import java.math.BigDecimal;
@@ -69,8 +64,13 @@ public class AtendimentoService {
 
     public Atendimento updateAtendimento(Long id, AtendimentoDTO atendimentoDTO) {
         Atendimento atendimento = getAtendimentoById(id);
-        atendimento.setVeterinario(veterinarioService.getVeterinarioById(atendimentoDTO.getVeterinarioId()));
-        atendimento.setAnimal(animalService.getAnimalById(atendimentoDTO.getAnimalId()));
+
+        if (atendimentoDTO.getVeterinarioId() != null) {
+            atendimento.setVeterinario(veterinarioService.getVeterinarioById(atendimentoDTO.getVeterinarioId()));
+        }
+        if (atendimentoDTO.getAnimalId() != null) {
+            atendimento.setAnimal(animalService.getAnimalById(atendimentoDTO.getAnimalId()));
+        }
 
         BigDecimal totalProdutos = BigDecimal.ZERO;
         if (atendimentoDTO.getProdutosIds() != null) {

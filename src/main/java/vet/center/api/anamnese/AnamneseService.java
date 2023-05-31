@@ -1,17 +1,12 @@
 package vet.center.api.anamnese;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import vet.center.api.domain.animal.Animal;
-import vet.center.api.domain.animal.AnimalRepository;
 import vet.center.api.domain.animal.AnimalService;
-import vet.center.api.domain.veterinario.Veterinario;
-import vet.center.api.domain.veterinario.VeterinarioRepository;
 import vet.center.api.domain.veterinario.VeterinarioService;
 
 @Service
