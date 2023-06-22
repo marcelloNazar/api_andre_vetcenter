@@ -1,5 +1,6 @@
 package vet.center.api.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +15,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequestMapping("/veterinario")
+@SecurityRequirement(name = "bearer-key")
 public class VeterinarioController {
 
     @Autowired

@@ -6,9 +6,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class AnamneseDTO {
-
-    private Long veterinarioId;
-    private Long animalId;
+    private Long atendimentoId;
     private String anamnese;
     private String estado;
     private String mucosas;

@@ -8,6 +8,7 @@ import lombok.*;
 import vet.center.api.atendimento.Atendimento;
 import vet.center.api.domain.proprietario.Proprietario;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -41,6 +42,7 @@ public class Animal {
 
     private Boolean castrado;
 
+    private LocalDateTime data;
 
     @ManyToOne
     @JoinColumn(name = "proprietario_id", nullable = false)

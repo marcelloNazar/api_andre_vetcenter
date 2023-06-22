@@ -2,6 +2,7 @@ package vet.center.api.anamnese;
 
 import jakarta.persistence.*;
 import lombok.*;
+import vet.center.api.atendimento.Atendimento;
 import vet.center.api.domain.animal.Animal;
 import vet.center.api.domain.veterinario.Veterinario;
 
@@ -19,13 +20,9 @@ public class Anamnese {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "veterinario_id", nullable = false)
-    private Veterinario veterinario;
-
-    @ManyToOne
-    @JoinColumn(name = "animal_id", nullable = false)
-    private Animal animal;
+    @OneToOne
+    @JoinColumn(name = "atendimento_id", nullable = false)
+    private Atendimento atendimento;
 
     private String anamnese;
     private String estado;

@@ -1,5 +1,6 @@
 package vet.center.api.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,10 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import vet.center.api.anamnese.Anamnese;
 import vet.center.api.anamnese.AnamneseDTO;
 import vet.center.api.anamnese.AnamneseService;
-;import static org.springframework.http.HttpStatus.CREATED;
+;import java.util.List;
+
+import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequestMapping("/anamnese")
+@SecurityRequirement(name = "bearer-key")
 public class AnamneseController {
 
     @Autowired
@@ -48,4 +52,10 @@ public class AnamneseController {
         anamneseService.deleteAnamnese(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/atendimento/{animalId}")
+    public ResponseEntity<List<Anamnese>> getAnamnesesByAnimalId(@PathVariable Long animalId) {
+        return ResponseEntity.ok(anamneseService.getAnamnesesByAtendimentoId(animalId));
+    }
+
 }

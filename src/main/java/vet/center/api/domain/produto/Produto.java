@@ -7,7 +7,9 @@ import lombok.*;
 import vet.center.api.atendimento.Atendimento;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -25,9 +27,10 @@ public class Produto {
     private BigDecimal valor;
     private Integer estoque;
     private String descricao;
-    @ManyToMany(mappedBy = "produtos")
+
     @JsonIgnore
     @JsonBackReference
-    private Set<Atendimento> atendimentos = new HashSet<>();
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AtendimentoProduto> atendimentos = new ArrayList<>();
 
 }

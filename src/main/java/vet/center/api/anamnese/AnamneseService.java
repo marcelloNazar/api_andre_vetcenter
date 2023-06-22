@@ -6,25 +6,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import vet.center.api.atendimento.AtendimentoService;
 import vet.center.api.domain.animal.AnimalService;
 import vet.center.api.domain.veterinario.VeterinarioService;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.List;
 
 @Service
 public class AnamneseService {
     @Autowired
     private AnamneseRepository anamneseRepository;
     @Autowired
-    private VeterinarioService veterinarioService;
-    @Autowired
-    private AnimalService animalService;
+    private AtendimentoService atendimentoService;
 
     public Anamnese createAnamnese(AnamneseDTO anamneseDTO) {
         Anamnese anamnese = new Anamnese();
 
-        anamnese.setVeterinario(veterinarioService.getVeterinarioById(anamneseDTO.getVeterinarioId()));
-        anamnese.setAnimal(animalService.getAnimalById(anamneseDTO.getAnimalId()));
+        anamnese.setAtendimento(atendimentoService.getAtendimentoById(anamneseDTO.getAtendimentoId()));
+        anamnese.setData(LocalDateTime.now());
 
-        BeanUtils.copyProperties(anamneseDTO, anamnese, "veterinarioId", "animalId");
+        BeanUtils.copyProperties(anamneseDTO, anamnese, "atendimentoId", "data");
 
         return anamneseRepository.save(anamnese);
     }
@@ -32,10 +36,9 @@ public class AnamneseService {
     public Anamnese updateAnamnese(Long id, AnamneseDTO anamneseDTO) {
         Anamnese anamnese = getAnamneseById(id);
 
-        anamnese.setVeterinario(veterinarioService.getVeterinarioById(anamneseDTO.getVeterinarioId()));
-        anamnese.setAnimal(animalService.getAnimalById(anamneseDTO.getAnimalId()));
+        anamnese.setAtendimento(atendimentoService.getAtendimentoById(anamneseDTO.getAtendimentoId()));
 
-        BeanUtils.copyProperties(anamneseDTO, anamnese, "veterinarioId", "animalId");
+        BeanUtils.copyProperties(anamneseDTO, anamnese, "atendimentoId");
 
         return anamneseRepository.save(anamnese);
     }
@@ -46,5 +49,11 @@ public class AnamneseService {
         return anamneseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Anamnese não encontrada"));
     }
 
+
     public void deleteAnamnese(Long id) {anamneseRepository.delete(getAnamneseById(id));}
+
+    public List<Anamnese> getAnamnesesByAtendimentoId(Long atendimentoId) {
+        return anamneseRepository.findAnamneseByAtendimentoId(atendimentoId);
+    }
+
 }

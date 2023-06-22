@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import vet.center.api.domain.proprietario.Proprietario;
 import vet.center.api.domain.proprietario.ProprietarioService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +24,7 @@ public class AnimalService {
         Animal animal = new Animal();
 
         animal.setProprietario(proprietarioService.getProprietarioById(animalDTO.getProprietarioId()));
+        animal.setData(LocalDateTime.now());
 
         BeanUtils.copyProperties(animalDTO, animal, "prorietarioId");
 
@@ -31,6 +33,7 @@ public class AnimalService {
 
     public Animal updateAnimal(Long id, AnimalDTO animalDetails) {
         Animal animal = getAnimalById(id);
+        animal.setData(LocalDateTime.now());
 
         if (animalDetails.getNome() != null) {
             animal.setNome(animalDetails.getNome());
