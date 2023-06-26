@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "animal")
@@ -22,36 +23,23 @@ public class Animal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String nome;
-
     @Enumerated(EnumType.STRING)
     private Especie especie;
-
     private String raca;
-
     private Sexo sexo;
-
     private String peso;
-
     private String idade;
-
     private String cor;
-
     private Temperamento temperamento;
-
     private Boolean castrado;
-
     private LocalDateTime data;
-
     @ManyToOne
     @JoinColumn(name = "proprietario_id", nullable = false)
     @JsonManagedReference
     private Proprietario proprietario;
-
     @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL)
     @JsonIgnore
     @JsonBackReference
     private List<Atendimento> atendimentos;
-
 }

@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vet.center.api.atendimento.*;
 
-import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequestMapping("/atendimento")
@@ -19,11 +18,6 @@ public class AtendimentoController {
 
     @Autowired
     private AtendimentoService atendimentoService;
-
-    @PostMapping
-    public ResponseEntity<Atendimento> createAtendimento(@RequestBody AtendimentoDTO atendimentoDTO) {
-        return ResponseEntity.status(CREATED).body(atendimentoService.createAtendimento(atendimentoDTO));
-    }
 
     @GetMapping
     public ResponseEntity<Page<Atendimento>> getAllAtendimentos(
@@ -40,13 +34,7 @@ public class AtendimentoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Atendimento> updateAtendimento(@PathVariable Long id, @RequestBody AtendimentoDTO atendimentoDTO) {
+    public ResponseEntity<Atendimento> updateAtendimento(@PathVariable Long id, @RequestBody AtendimentoUpdateDTO atendimentoDTO) {
         return ResponseEntity.ok(atendimentoService.updateAtendimento(id, atendimentoDTO));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAtendimento(@PathVariable Long id) {
-        atendimentoService.deleteAtendimento(id);
-        return ResponseEntity.noContent().build();
     }
 }

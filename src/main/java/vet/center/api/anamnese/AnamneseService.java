@@ -7,12 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import vet.center.api.atendimento.AtendimentoService;
-import vet.center.api.domain.animal.AnimalService;
-import vet.center.api.domain.veterinario.VeterinarioService;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -48,7 +44,6 @@ public class AnamneseService {
     public Anamnese getAnamneseById(Long id) {
         return anamneseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Anamnese não encontrada"));
     }
-
 
     public void deleteAnamnese(Long id) {anamneseRepository.delete(getAnamneseById(id));}
 

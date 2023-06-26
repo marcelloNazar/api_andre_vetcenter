@@ -1,6 +1,5 @@
 package vet.center.api.user;
 
-import jakarta.persistence.Embedded;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

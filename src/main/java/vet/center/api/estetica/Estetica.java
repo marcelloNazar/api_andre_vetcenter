@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import vet.center.api.domain.animal.Animal;
 import vet.center.api.domain.produto.Produto;
+import vet.center.api.domain.proprietario.Proprietario;
 import vet.center.api.domain.servico.Servico;
-import vet.center.api.domain.veterinario.Veterinario;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -29,8 +29,8 @@ public class Estetica {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "veterinario_id", nullable = false)
-    private Veterinario veterinario;
+    @JoinColumn(name = "proprietario_id", nullable = false)
+    private Proprietario proprietario;
 
     @ManyToOne
     @JoinColumn(name = "animal_id", nullable = false)

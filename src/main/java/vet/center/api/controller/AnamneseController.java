@@ -53,7 +53,7 @@ public class AnamneseController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/atendimento/{animalId}")
+    @GetMapping("/atendimento/{atendimentoId}")
     public ResponseEntity<List<Anamnese>> getAnamnesesByAnimalId(@PathVariable Long animalId) {
         return ResponseEntity.ok(anamneseService.getAnamnesesByAtendimentoId(animalId));
     }

@@ -1,17 +1,18 @@
 package vet.center.api.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import vet.center.api.atendimento.Atendimento;
 import vet.center.api.user.*;
 
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-
-
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
@@ -51,5 +52,9 @@ public class AuthService {
                 .token(jwtToken)
                 .role(user.getRole())
                 .build();
+    }
+
+    public Page<User> getAllVeterinarios(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 }

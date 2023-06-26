@@ -3,8 +3,6 @@ package vet.center.api.anamnese;
 import jakarta.persistence.*;
 import lombok.*;
 import vet.center.api.atendimento.Atendimento;
-import vet.center.api.domain.animal.Animal;
-import vet.center.api.domain.veterinario.Veterinario;
 
 import java.time.LocalDateTime;
 
@@ -15,15 +13,12 @@ import java.time.LocalDateTime;
 @Table(name = "anamnese")
 @Entity(name = "anamnese")
 public class Anamnese {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @OneToOne
     @JoinColumn(name = "atendimento_id", nullable = false)
     private Atendimento atendimento;
-
     private String anamnese;
     private String estado;
     private String mucosas;

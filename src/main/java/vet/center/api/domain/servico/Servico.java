@@ -4,13 +4,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import vet.center.api.atendimento.Atendimento;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 @Getter
@@ -27,7 +24,6 @@ public class Servico {
     private String nome;
     private BigDecimal valor;
     private String descricao;
-
     @JsonIgnore
     @JsonBackReference
     @OneToMany(mappedBy = "servico", cascade = CascadeType.ALL, orphanRemoval = true)

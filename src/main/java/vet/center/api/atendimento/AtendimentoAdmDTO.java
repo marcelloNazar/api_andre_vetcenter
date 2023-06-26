@@ -3,8 +3,7 @@ package vet.center.api.atendimento;
 import lombok.Data;
 
 @Data
-public class AtendimentoDTO {
+public class AtendimentoAdmDTO {
     private Long veterinarioId;
-    private Long animalId;
-
+    private Boolean pago;
 }

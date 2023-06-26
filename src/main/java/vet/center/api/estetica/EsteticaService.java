@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 import vet.center.api.domain.animal.AnimalService;
 import vet.center.api.domain.produto.Produto;
 import vet.center.api.domain.produto.ProdutoService;
+import vet.center.api.domain.proprietario.ProprietarioService;
 import vet.center.api.domain.servico.Servico;
 import vet.center.api.domain.servico.ServicoService;
-import vet.center.api.domain.veterinario.VeterinarioService;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -21,7 +21,7 @@ public class EsteticaService {
     @Autowired
     private EsteticaRepository esteticaRepository;
     @Autowired
-    private VeterinarioService veterinarioService;
+    private ProprietarioService proprietarioService;
     @Autowired
     private AnimalService animalService;
     @Autowired
@@ -33,7 +33,7 @@ public class EsteticaService {
     public Estetica createEstetica(EsteticaDTO esteticaDTO) {
         Estetica estetica = new Estetica();
 
-        estetica.setVeterinario(veterinarioService.getVeterinarioById(esteticaDTO.getVeterinarioId()));
+        estetica.setProprietario(proprietarioService.getProprietarioById(esteticaDTO.getProprietarioId()));
         estetica.setAnimal(animalService.getAnimalById(esteticaDTO.getAnimalId()));
 
         BigDecimal totalProdutos = BigDecimal.ZERO;
@@ -67,8 +67,8 @@ public class EsteticaService {
     public Estetica updateEstetica(Long id, EsteticaDTO esteticaDTO) {
         Estetica estetica = getEsteticaById(id);
 
-        if (esteticaDTO.getVeterinarioId() != null) {
-            estetica.setVeterinario(veterinarioService.getVeterinarioById(esteticaDTO.getVeterinarioId()));
+        if (esteticaDTO.getProprietarioId() != null) {
+            estetica.setProprietario(proprietarioService.getProprietarioById(esteticaDTO.getProprietarioId()));
         }
         if (esteticaDTO.getAnimalId() != null) {
             estetica.setAnimal(animalService.getAnimalById(esteticaDTO.getAnimalId()));

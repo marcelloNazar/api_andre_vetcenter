@@ -11,7 +11,6 @@ import vet.center.api.domain.proprietario.ProprietarioService;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AnimalService {
@@ -49,6 +48,7 @@ public class AnimalService {
         }
         if (animalDetails.getPeso() != null) {
             animal.setPeso(animalDetails.getPeso());
+            animal.setData(LocalDateTime.now());
         }
         if (animalDetails.getIdade() != null) {
             animal.setIdade(animalDetails.getIdade());
@@ -82,5 +82,4 @@ public class AnimalService {
     public List<Animal> getAnimalsByProprietarioId(Long proprietarioId) {
         return animalRepository.findByProprietarioId(proprietarioId);
     }
-
 }
