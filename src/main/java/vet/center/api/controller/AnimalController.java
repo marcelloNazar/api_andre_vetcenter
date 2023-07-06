@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 import vet.center.api.domain.animal.*;
 
 import java.util.List;
@@ -24,12 +25,14 @@ public class AnimalController {
     private AnimalService animalService;
 
     @PostMapping
-    public ResponseEntity<Animal> createAnimal(@Valid @RequestBody AnimalDTO animal) {
-        return ResponseEntity.status(CREATED).body(animalService.createAnimal(animal));
+    public ResponseEntity<AnimalResponseDTO> createAnimal(@Valid @RequestBody AnimalDTO animalDTO, UriComponentsBuilder uriComponentsBuilder) {
+        var animal = animalService.createAnimal(animalDTO);
+        var uri = uriComponentsBuilder.path("/animal/{id}").buildAndExpand(animal.getId()).toUri();
+        return ResponseEntity.created(uri).body(animal);
     }
 
     @GetMapping
-    public ResponseEntity<Page<Animal>> getAllAnimals(
+    public ResponseEntity<Page<AnimalResponseDTO>> getAllAnimals(
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "10") Integer size,
             @RequestParam(defaultValue = "id") String sort) {
@@ -43,7 +46,7 @@ public class AnimalController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Animal> updateAnimal(@PathVariable(value = "id") Long id, @RequestBody AnimalDTO animalDetails) {
+    public ResponseEntity<AnimalResponseDTO> updateAnimal(@PathVariable(value = "id") Long id, @RequestBody AnimalDTO animalDetails) {
         return ResponseEntity.ok(animalService.updateAnimal(id, animalDetails));
     }
 
@@ -54,7 +57,7 @@ public class AnimalController {
     }
 
     @GetMapping("/proprietario/{proprietarioId}")
-    public List<Animal> getAnimalsByProprietarioId(@PathVariable(value = "proprietarioId") Long proprietarioId) {
+    public List<AnimalResponseDTO> getAnimalsByProprietarioId(@PathVariable(value = "proprietarioId") Long proprietarioId) {
         return animalService.getAnimalsByProprietarioId(proprietarioId);
     }
 }

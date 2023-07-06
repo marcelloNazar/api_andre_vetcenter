@@ -1,6 +1,7 @@
 package vet.center.api.atendimento;
 
 import jakarta.transaction.Transactional;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,7 @@ import vet.center.api.user.UserRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 @Service
 public class AtendimentoService {
@@ -41,23 +43,58 @@ public class AtendimentoService {
     @Autowired
     private AtendimentoServicoRepository atendimentoServicoRepository;
 
+    private ProdutoDTO convertToProdutoDto(AtendimentoProduto atendimentoProduto) {
+        ProdutoDTO dto = new ProdutoDTO();
+        BeanUtils.copyProperties(atendimentoProduto.getProduto(), dto);
+        dto.setQuantidade(atendimentoProduto.getQuantidade());
+        return dto;
+    }
+
+    private ServicoDTO convertToServicoDto(AtendimentoServico atendimentoServico) {
+        ServicoDTO dto = new ServicoDTO();
+        BeanUtils.copyProperties(atendimentoServico.getServico(), dto);
+        dto.setQuantidade(atendimentoServico.getQuantidade());
+        return dto;
+    }
+
+    private AtendimentoResponseDTO convertToDto(Atendimento atendimento) {
+        AtendimentoResponseDTO dto = new AtendimentoResponseDTO();
+        BeanUtils.copyProperties(atendimento, dto);
+        dto.setVeterinario(atendimento.getVeterinario());
+        dto.setAnimal(atendimento.getAnimal());
+        dto.setProprietario(atendimento.getProprietario());
+
+        dto.setProdutos(atendimento.getAtendimentoProdutos().stream()
+                .map(this::convertToProdutoDto)
+                .collect(Collectors.toList()));
+
+        dto.setServicos(atendimento.getAtendimentoServicos().stream()
+                .map(this::convertToServicoDto)
+                .collect(Collectors.toList()));
+
+        return dto;
+    }
+
     @Transactional
-    public Atendimento createAtendimento(AtendimentoDTO atendimentoDTO) {
+    public AtendimentoResponseDTO  createAtendimento(AtendimentoDTO atendimentoDTO) {
         Atendimento atendimento = new Atendimento();
 
         User veterinario = userRepository.findById(atendimentoDTO.getVeterinarioId()).orElseThrow(() -> new UsernameNotFoundException("Veterinario não encontrado: "));
         atendimento.setVeterinario(veterinario);
         Animal animal = animalService.getAnimalById(atendimentoDTO.getAnimalId());
-
+        atendimento.setConcluido(false);
+        atendimento.setFinalizado(false);
+        atendimento.setPago(false);
         atendimento.setAnimal(animal);
         atendimento.setProprietario(animal.getProprietario());
         atendimento.setDateTime(LocalDateTime.now());
+        atendimento = atendimentoRepository.save(atendimento);
 
-        return atendimentoRepository.save(atendimento);
+        return convertToDto(atendimento);
     }
 
     @Transactional
-    public Atendimento updateAtendimento(Long id, AtendimentoUpdateDTO atendimentoDTO) {
+    public AtendimentoResponseDTO updateAtendimento(Long id, AtendimentoUpdateDTO atendimentoDTO) {
         Atendimento atendimento = getAtendimentoById(id);
 
         String currentUserName = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -81,18 +118,18 @@ public class AtendimentoService {
         }
         atendimento.setTotal(total);
 
-        if (atendimentoDTO.getConcluido()) {
-            atendimento.setConcluido(true);
-        }
+        atendimento.setConcluido(true);
 
-        return atendimentoRepository.save(atendimento);
+
+        atendimentoRepository.save(atendimento);
+
+        return convertToDto(atendimento);
     }
 
     @Transactional
-    public Atendimento updateAtendimentoAdm(Long id, AtendimentoAdmDTO atendimentoDTO) {
+    public AtendimentoResponseDTO  updateAtendimentoAdm(Long id, AtendimentoAdmDTO atendimentoDTO) {
         Atendimento atendimento = getAtendimentoById(id);
-        atendimento.setPago(false);
-
+        atendimento.setFinalizado(true);
         if (atendimentoDTO.getVeterinarioId() != null) {
             User veterinario = userRepository.findById(atendimentoDTO.getVeterinarioId()).orElseThrow(() -> new UsernameNotFoundException("Veterinario não encontrado: "));
             atendimento.setVeterinario(veterinario);
@@ -105,31 +142,58 @@ public class AtendimentoService {
             proprietario.setDivida(atendimento.getTotal());
             proprietarioRepository.save(proprietario);
         }
-        return atendimentoRepository.save(atendimento);
+        return convertToDto(atendimento);
     }
 
-    public Page<Atendimento> getAllAtendimentosAdm(Pageable pageable) {
-        return atendimentoRepository.findAll(pageable);
+    public Page<AtendimentoResponseDTO> getAllAtendimentosAdm(Pageable pageable) {
+        return atendimentoRepository.findAllByConcluidoFalse(pageable)
+                .map(this::convertToDto);
+    }
+    public Page<AtendimentoResponseDTO> getAllAtendimentosFinalizados(Pageable pageable) {
+        return atendimentoRepository.findAllByFinalizadoTrue(pageable)
+                .map(this::convertToDto);
     }
 
-    public Page<Atendimento> getAllAtendimentosConcluidos(Pageable pageable) {
-        return atendimentoRepository.findAllByConcluidoTrue(pageable);
+    public Page<AtendimentoResponseDTO> getAllAtendimentosConcluidos(Pageable pageable) {
+        return atendimentoRepository.findAllByConcluidoTrueAndFinalizadoFalse(pageable)
+                .map(this::convertToDto);
     }
 
-    public Page<Atendimento> getAllAtendimentosPagos(Pageable pageable) {
-        return atendimentoRepository.findAllByPagoTrue(pageable);
+    public Page<AtendimentoResponseDTO> getAllAtendimentosPagos(Pageable pageable) {
+        return atendimentoRepository.findAllByPagoTrue(pageable)
+                .map(this::convertToDto);
     }
 
-    public Page<Atendimento> getAllAtendimentosPagosFalse(Pageable pageable) {
-        return atendimentoRepository.findAllByConcluidoFalse(pageable);
+    public Page<AtendimentoResponseDTO> getAllAtendimentoFinalizado(Pageable pageable) {
+        return atendimentoRepository.findAllByFinalizadoTrue(pageable)
+                .map(this::convertToDto);
+    }
+    public Page<AtendimentoResponseDTO> getAllAtendimentosPagosFalse(Pageable pageable) {
+        return atendimentoRepository.findAllByConcluidoFalse(pageable)
+                .map(this::convertToDto);
     }
 
-    public Page<Atendimento> getAllAtendimentos(Pageable pageable) {
+    public Page<AtendimentoResponseDTO> getAllAtendimentos(Pageable pageable) {
         try {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
-            User veterinario = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + username));
+            User veterinario = userRepository.findByUsername(username)
+                    .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + username));
             Long veterinarioId = veterinario.getId();
-            return atendimentoRepository.findAllByVeterinarioId(veterinarioId, pageable);
+            return atendimentoRepository.findAllByVeterinarioIdAndConcluidoFalse(veterinarioId, pageable)
+                    .map(this::convertToDto);
+        } catch (Exception e) {
+            return Page.empty();
+        }
+    }
+
+    public Page<AtendimentoResponseDTO> getAllAtendimentosConcluidosUser(Pageable pageable) {
+        try {
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            User veterinario = userRepository.findByUsername(username)
+                    .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + username));
+            Long veterinarioId = veterinario.getId();
+            return atendimentoRepository.findAllByVeterinarioIdAndConcluidoTrueAndFinalizadoFalse(veterinarioId, pageable)
+                    .map(this::convertToDto);
         } catch (Exception e) {
             return Page.empty();
         }

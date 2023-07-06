@@ -19,22 +19,30 @@ public class AtendimentoController {
     @Autowired
     private AtendimentoService atendimentoService;
 
-    @GetMapping
-    public ResponseEntity<Page<Atendimento>> getAllAtendimentos(
+    @GetMapping("/lista")
+    public ResponseEntity<Page<AtendimentoResponseDTO>> getAllAtendimentos(
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "10") Integer size,
             @RequestParam(defaultValue = "id") String sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
         return ResponseEntity.ok(atendimentoService.getAllAtendimentos(pageable));
     }
+    @GetMapping("/concluidos")
+    public ResponseEntity<Page<AtendimentoResponseDTO>> Concluidos(
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(defaultValue = "id") String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        return ResponseEntity.ok(atendimentoService.getAllAtendimentosConcluidosUser(pageable));
+    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Atendimento> getAtendimento(@PathVariable Long id) {
+    public ResponseEntity<Atendimento> getAtendimento(@PathVariable(value = "id") Long id) {
         return ResponseEntity.ok(atendimentoService.getAtendimentoById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Atendimento> updateAtendimento(@PathVariable Long id, @RequestBody AtendimentoUpdateDTO atendimentoDTO) {
+    public ResponseEntity<AtendimentoResponseDTO> updateAtendimento(@PathVariable(value = "id") Long id, @RequestBody AtendimentoUpdateDTO atendimentoDTO) {
         return ResponseEntity.ok(atendimentoService.updateAtendimento(id, atendimentoDTO));
     }
 }

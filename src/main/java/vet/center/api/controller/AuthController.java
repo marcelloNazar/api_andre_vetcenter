@@ -5,9 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vet.center.api.config.AuthService;
+import vet.center.api.domain.animal.Animal;
 import vet.center.api.user.AuthRequest;
 import vet.center.api.user.AuthResponse;
 import vet.center.api.user.RegisterRequest;
+import vet.center.api.user.User;
 
 @RestController
 @RequestMapping("/auth")
@@ -25,5 +27,10 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthRequest request) {
         return ResponseEntity.ok(service.authenticate(request));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getAnimalById(@PathVariable(value = "id") Long id) {
+        return ResponseEntity.ok(service.getUserById(id));
     }
 }

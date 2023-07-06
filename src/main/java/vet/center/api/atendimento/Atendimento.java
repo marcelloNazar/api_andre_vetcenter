@@ -45,6 +45,7 @@ public class Atendimento {
     private LocalDateTime dateTime;
     private Boolean concluido;
     private Boolean pago;
+    private Boolean finalizado;
     private BigDecimal total;
 
 }

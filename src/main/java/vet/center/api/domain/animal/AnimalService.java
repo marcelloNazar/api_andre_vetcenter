@@ -11,6 +11,7 @@ import vet.center.api.domain.proprietario.ProprietarioService;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AnimalService {
@@ -19,18 +20,23 @@ public class AnimalService {
     @Autowired
     private ProprietarioService proprietarioService;
 
-    public Animal createAnimal(AnimalDTO animalDTO) {
-        Animal animal = new Animal();
-
-        animal.setProprietario(proprietarioService.getProprietarioById(animalDTO.getProprietarioId()));
-        animal.setData(LocalDateTime.now());
-
-        BeanUtils.copyProperties(animalDTO, animal, "prorietarioId");
-
-        return animalRepository.save(animal);
+    private AnimalResponseDTO convertToDto(Animal animal) {
+        AnimalResponseDTO dto = new AnimalResponseDTO();
+        BeanUtils.copyProperties(animal, dto);
+        dto.setProprietario(proprietarioService.getProprietarioById(animal.getProprietario().getId()));
+        return dto;
     }
 
-    public Animal updateAnimal(Long id, AnimalDTO animalDetails) {
+    public AnimalResponseDTO createAnimal(AnimalDTO animalDTO) {
+        Animal animal = new Animal();
+        animal.setProprietario(proprietarioService.getProprietarioById(animalDTO.getProprietarioId()));
+        animal.setData(LocalDateTime.now());
+        BeanUtils.copyProperties(animalDTO, animal, "proprietarioId");
+        animal = animalRepository.save(animal);
+        return convertToDto(animal);
+    }
+
+    public AnimalResponseDTO updateAnimal(Long id, AnimalDTO animalDetails) {
         Animal animal = getAnimalById(id);
         animal.setData(LocalDateTime.now());
 
@@ -66,10 +72,14 @@ public class AnimalService {
             Proprietario proprietario = proprietarioService.getProprietarioById(animalDetails.getProprietarioId());
             animal.setProprietario(proprietario);
         }
-        return animalRepository.save(animal);
+        animal = animalRepository.save(animal);
+        return convertToDto(animal);
     }
 
-    public Page<Animal> getAllAnimals(Pageable pageable) {return animalRepository.findAll(pageable);}
+    public Page<AnimalResponseDTO> getAllAnimals(Pageable pageable) {
+        return animalRepository.findAll(pageable).map(this::convertToDto);
+    }
+
 
     public Animal getAnimalById(Long id) {
         return animalRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Animal não encontrado"));
@@ -79,7 +89,7 @@ public class AnimalService {
         animalRepository.delete(getAnimalById(id));
     }
 
-    public List<Animal> getAnimalsByProprietarioId(Long proprietarioId) {
-        return animalRepository.findByProprietarioId(proprietarioId);
+    public List<AnimalResponseDTO> getAnimalsByProprietarioId(Long proprietarioId) {
+        return animalRepository.findByProprietarioId(proprietarioId).stream().map(this::convertToDto).collect(Collectors.toList());
     }
 }

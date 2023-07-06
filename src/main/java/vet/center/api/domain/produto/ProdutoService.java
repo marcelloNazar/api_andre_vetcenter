@@ -29,9 +29,7 @@ public class ProdutoService {
         if (produtoDetails.getDescricao() != null) {
             produto.setDescricao(produtoDetails.getDescricao());
         }
-        if (produtoDetails.getEstoque() != null) {
-            produto.setEstoque(produtoDetails.getEstoque());
-        }
+
 
         return produtoRepository.save(produto);
     }

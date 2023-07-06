@@ -1,12 +1,18 @@
 package vet.center.api.atendimento;
 
+import io.micrometer.observation.ObservationFilter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AtendimentoRepository extends JpaRepository<Atendimento, Long> {
-    Page<Atendimento> findAllByVeterinarioId(Long veterinarioId, Pageable pageable);
-    Page<Atendimento> findAllByConcluidoTrue(Pageable pageable);
+    Page<Atendimento> findAllByVeterinarioIdAndConcluidoFalse(Long veterinarioId, Pageable pageable);
+    Page<Atendimento> findAllByConcluidoTrueAndPagoFalse(Pageable pageable);
     Page<Atendimento> findAllByPagoTrue(Pageable pageable);
     Page<Atendimento> findAllByConcluidoFalse(Pageable pageable);
+    Page<Atendimento> findAllByFinalizadoTrue(Pageable pageable);
+    Page<Atendimento> findAllByConcluidoTrueAndFinalizadoFalse(Pageable pageable);
+    Page<Atendimento> findAllByVeterinarioIdAndConcluidoTrue(Long veterinarioId, Pageable pageable);
+
+    Page<Atendimento> findAllByVeterinarioIdAndConcluidoTrueAndFinalizadoFalse(Long veterinarioId, Pageable pageable);
 }

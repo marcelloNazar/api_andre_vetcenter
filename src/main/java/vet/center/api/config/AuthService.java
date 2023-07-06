@@ -57,4 +57,8 @@ public class AuthService {
     public Page<User> getAllVeterinarios(Pageable pageable) {
         return repository.findAll(pageable);
     }
+
+    public User getUserById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Usuario não encontrado"));
+    }
 }

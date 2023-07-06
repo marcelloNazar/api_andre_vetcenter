@@ -1,4 +1,4 @@
-package vet.center.api.domain;
+package vet.center.api.infra.exception;
 
 public class ValidacaoExeption extends RuntimeException {
     public ValidacaoExeption(String mensagem) {

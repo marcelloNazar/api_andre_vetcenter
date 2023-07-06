@@ -1,6 +1,5 @@
 package vet.center.api.user;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import vet.center.api.domain.endereco.Endereco;
 
 import java.util.Collection;
-import java.util.List;
 
 @Getter
 @Setter

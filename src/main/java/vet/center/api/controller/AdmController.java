@@ -28,20 +28,38 @@ public class AdmController {
     private AuthService authService;
 
     @PostMapping
-    public ResponseEntity<Atendimento> createAtendimento(@RequestBody AtendimentoDTO atendimentoDTO) {
+    public ResponseEntity<AtendimentoResponseDTO> createAtendimento(@RequestBody AtendimentoDTO atendimentoDTO) {
         return ResponseEntity.status(CREATED).body(atendimentoService.createAtendimento(atendimentoDTO));
     }
 
     @GetMapping
-    public ResponseEntity<Page<Atendimento>> getAllAtendimentos(
+    public ResponseEntity<Page<AtendimentoResponseDTO>> getAllAtendimentos(
             @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(defaultValue = "50") Integer size,
             @RequestParam(defaultValue = "id") String sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
         return ResponseEntity.ok(atendimentoService.getAllAtendimentosAdm(pageable));
     }
+
+    @GetMapping("/concluidos")
+    public ResponseEntity<Page<AtendimentoResponseDTO>> getAllAtendimentosConcluidos(
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "50") Integer size,
+            @RequestParam(defaultValue = "id") String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        return ResponseEntity.ok(atendimentoService.getAllAtendimentosConcluidos(pageable));
+    }
+
+    @GetMapping("/finalizados")
+    public ResponseEntity<Page<AtendimentoResponseDTO>> getAllAtendimentosFinalizados(
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "50") Integer size,
+            @RequestParam(defaultValue = "id") String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        return ResponseEntity.ok(atendimentoService.getAllAtendimentosFinalizados(pageable));
+    }
     @PutMapping("/{id}")
-    public ResponseEntity<Atendimento> updateAtendimento(@PathVariable Long id, @RequestBody AtendimentoAdmDTO atendimentoDTO) {
+    public ResponseEntity<AtendimentoResponseDTO> updateAtendimento(@PathVariable Long id, @RequestBody AtendimentoAdmDTO atendimentoDTO) {
         return ResponseEntity.ok(atendimentoService.updateAtendimentoAdm(id, atendimentoDTO));
     }
 
