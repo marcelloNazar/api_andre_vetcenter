@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface AtendimentoRepository extends JpaRepository<Atendimento, Long> {
     Page<Atendimento> findAllByVeterinarioIdAndConcluidoFalse(Long veterinarioId, Pageable pageable);
     Page<Atendimento> findAllByConcluidoTrueAndPagoFalse(Pageable pageable);
@@ -15,4 +17,6 @@ public interface AtendimentoRepository extends JpaRepository<Atendimento, Long> 
     Page<Atendimento> findAllByVeterinarioIdAndConcluidoTrue(Long veterinarioId, Pageable pageable);
 
     Page<Atendimento> findAllByVeterinarioIdAndConcluidoTrueAndFinalizadoFalse(Long veterinarioId, Pageable pageable);
+
+    Page<Atendimento> findAllByPagosFalse(Pageable pageable);
 }

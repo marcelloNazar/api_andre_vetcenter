@@ -58,6 +58,25 @@ public class AdmController {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
         return ResponseEntity.ok(atendimentoService.getAllAtendimentosFinalizados(pageable));
     }
+
+    @GetMapping("/pagos")
+    public ResponseEntity<Page<AtendimentoResponseDTO>> getAllAtendimentosPagos(
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "50") Integer size,
+            @RequestParam(defaultValue = "id") String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        return ResponseEntity.ok(atendimentoService.getAllAtendimentosPagos(pageable));
+    }
+
+    @GetMapping("/naopagos")
+    public ResponseEntity<Page<AtendimentoResponseDTO>> getAllAtendimentosPagosFalse(
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "50") Integer size,
+            @RequestParam(defaultValue = "id") String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        return ResponseEntity.ok(atendimentoService.getAllAtendimentosPagosFalse(pageable));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<AtendimentoResponseDTO> updateAtendimento(@PathVariable Long id, @RequestBody AtendimentoAdmDTO atendimentoDTO) {
         return ResponseEntity.ok(atendimentoService.updateAtendimentoAdm(id, atendimentoDTO));

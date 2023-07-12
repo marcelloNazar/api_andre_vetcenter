@@ -164,12 +164,14 @@ public class AtendimentoService {
                 .map(this::convertToDto);
     }
 
+
+
     public Page<AtendimentoResponseDTO> getAllAtendimentoFinalizado(Pageable pageable) {
         return atendimentoRepository.findAllByFinalizadoTrue(pageable)
                 .map(this::convertToDto);
     }
     public Page<AtendimentoResponseDTO> getAllAtendimentosPagosFalse(Pageable pageable) {
-        return atendimentoRepository.findAllByConcluidoFalse(pageable)
+        return atendimentoRepository.findAllByPagosFalse(pageable)
                 .map(this::convertToDto);
     }
 
