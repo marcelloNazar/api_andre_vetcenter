@@ -16,5 +16,6 @@ public interface AtendimentoRepository extends JpaRepository<Atendimento, Long> 
     Page<Atendimento> findAllByConcluidoTrueAndFinalizadoFalse(Pageable pageable);
     Page<Atendimento> findAllByVeterinarioIdAndConcluidoTrue(Long veterinarioId, Pageable pageable);
     Page<Atendimento> findAllByVeterinarioIdAndConcluidoTrueAndFinalizadoFalse(Long veterinarioId, Pageable pageable);
-    Page<Atendimento> findAllByPagoFalse(Pageable pageable);
+    Page<Atendimento> findAllByFinalizadoTrueAndPagoFalse(Pageable pageable);
+
 }
