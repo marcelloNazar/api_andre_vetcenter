@@ -171,7 +171,7 @@ public class AtendimentoService {
                 .map(this::convertToDto);
     }
     public Page<AtendimentoResponseDTO> getAllAtendimentosPagosFalse(Pageable pageable) {
-        return atendimentoRepository.findAllByPagosFalse(pageable)
+        return atendimentoRepository.findAllByPagoFalse(pageable)
                 .map(this::convertToDto);
     }
 
