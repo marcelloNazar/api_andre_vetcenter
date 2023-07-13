@@ -103,6 +103,9 @@ public class AtendimentoService {
             throw new RuntimeException("Você não tem permissão para atualizar este atendimento.");
         }
 
+        atendimentoProdutoRepository.deleteByAtendimento(atendimento);
+        atendimentoServicoRepository.deleteByAtendimento(atendimento);
+
         BigDecimal total = BigDecimal.ZERO;
         for (AtendimentoProdutoDTO produtoDto : atendimentoDTO.getAtendimentoProdutos()) {
             Produto produto = produtoService.getProdutoById(produtoDto.getProdutoId());
