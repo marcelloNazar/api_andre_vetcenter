@@ -16,8 +16,6 @@ public class Anamnese {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
-    @JoinColumn(name = "atendimento_id", nullable = false)
     private Long atendimentoId;
     private String anamnese;
     private String estado;
