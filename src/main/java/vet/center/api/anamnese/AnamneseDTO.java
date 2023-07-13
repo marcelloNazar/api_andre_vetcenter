@@ -27,7 +27,6 @@ public class AnamneseDTO {
     private String reflexoToce;
     private String emagrecimento;
     private String alteracaoComportamental;
-    private String observacoes;
     private String extoscopia;
     private String cavidadeAbdominal;
     private String cabecaPescoco;
@@ -38,12 +37,6 @@ public class AnamneseDTO {
     private String pulso;
     private String fc;
     private String fr;
-    private String observacoes2;
-    private String examesComplementares;
-    private String diagnostico;
-    private String prognostico;
-    private String tratamento;
-    private String retorno;
     private LocalDateTime data;
 
 }

@@ -18,7 +18,7 @@ public class Anamnese {
     private Long id;
     @OneToOne
     @JoinColumn(name = "atendimento_id", nullable = false)
-    private Atendimento atendimento;
+    private Long atendimentoId;
     private String anamnese;
     private String estado;
     private String mucosas;
@@ -39,7 +39,6 @@ public class Anamnese {
     private String reflexoToce;
     private String emagrecimento;
     private String alteracaoComportamental;
-    private String observacoes;
     private String extoscopia;
     private String cavidadeAbdominal;
     private String cabecaPescoco;
@@ -50,12 +49,6 @@ public class Anamnese {
     private String pulso;
     private String fc;
     private String fr;
-    private String observacoes2;
-    private String examesComplementares;
-    private String diagnostico;
-    private String prognostico;
-    private String tratamento;
-    private String retorno;
     private LocalDateTime data;
 
 }

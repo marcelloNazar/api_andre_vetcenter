@@ -21,20 +21,16 @@ public class AnamneseService {
     public Anamnese createAnamnese(AnamneseDTO anamneseDTO) {
         Anamnese anamnese = new Anamnese();
 
-        anamnese.setAtendimento(atendimentoService.getAtendimentoById(anamneseDTO.getAtendimentoId()));
         anamnese.setData(LocalDateTime.now());
 
-        BeanUtils.copyProperties(anamneseDTO, anamnese, "atendimentoId", "data");
+        BeanUtils.copyProperties(anamneseDTO, anamnese, "data");
 
         return anamneseRepository.save(anamnese);
     }
 
     public Anamnese updateAnamnese(Long id, AnamneseDTO anamneseDTO) {
         Anamnese anamnese = getAnamneseById(id);
-
-        anamnese.setAtendimento(atendimentoService.getAtendimentoById(anamneseDTO.getAtendimentoId()));
-
-        BeanUtils.copyProperties(anamneseDTO, anamnese, "atendimentoId");
+        BeanUtils.copyProperties(anamneseDTO, anamnese);
 
         return anamneseRepository.save(anamnese);
     }
