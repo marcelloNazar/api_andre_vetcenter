@@ -94,6 +94,26 @@ public class AtendimentoService {
     }
 
     @Transactional
+    public AtendimentoResponseDTO  createAtendimentoVeterinario(AtendimentoDTO atendimentoDTO) {
+        Atendimento atendimento = new Atendimento();
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User veterinario = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + username));
+        atendimento.setVeterinario(veterinario);
+        Animal animal = animalService.getAnimalById(atendimentoDTO.getAnimalId());
+        atendimento.setConcluido(false);
+        atendimento.setFinalizado(false);
+        atendimento.setPago(false);
+        atendimento.setAnimal(animal);
+        atendimento.setProprietario(animal.getProprietario());
+        atendimento.setDateTime(LocalDateTime.now());
+        atendimento = atendimentoRepository.save(atendimento);
+
+        return convertToDto(atendimento);
+    }
+
+    @Transactional
     public AtendimentoResponseDTO updateAtendimento(Long id, AtendimentoUpdateDTO atendimentoDTO) {
         Atendimento atendimento = getAtendimentoById(id);
 

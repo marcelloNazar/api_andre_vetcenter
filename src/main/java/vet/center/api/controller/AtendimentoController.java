@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vet.center.api.atendimento.*;
 
+import static org.springframework.http.HttpStatus.CREATED;
+
 
 @RestController
 @RequestMapping("/atendimento")
@@ -18,6 +20,12 @@ public class AtendimentoController {
 
     @Autowired
     private AtendimentoService atendimentoService;
+
+    @PostMapping
+    public ResponseEntity<AtendimentoResponseDTO> createAtendimento(@RequestBody AtendimentoDTO atendimentoDTO) {
+        return ResponseEntity.status(CREATED).body(atendimentoService.createAtendimentoVeterinario(atendimentoDTO));
+    }
+
 
     @GetMapping("/lista")
     public ResponseEntity<Page<AtendimentoResponseDTO>> getAllAtendimentos(
