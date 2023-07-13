@@ -16,19 +16,19 @@ public class ProprietarioService {
 
     public Proprietario updateProprietario(Long id, Proprietario proprietarioDetails) {
         Proprietario proprietario = getProprietarioById(id);
-        if (proprietarioDetails.getNome() != null) {
+        if (proprietarioDetails.getNome() != "") {
             proprietario.setNome(proprietarioDetails.getNome());
         }
-        if (proprietarioDetails.getTelefone() != null) {
+        if (proprietarioDetails.getTelefone() != "") {
             proprietario.setTelefone(proprietarioDetails.getTelefone());
         }
-        if (proprietarioDetails.getCpf() != null) {
+        if (proprietarioDetails.getCpf() != "") {
             proprietario.setCpf(proprietarioDetails.getCpf());
         }
-        if (proprietarioDetails.getNascimento() != null) {
+        if (proprietarioDetails.getNascimento() != "") {
             proprietario.setNascimento(proprietarioDetails.getNascimento());
         }
-        if (proprietarioDetails.getNomeMae() != null) {
+        if (proprietarioDetails.getNomeMae() != "") {
             proprietario.setNomeMae(proprietarioDetails.getNomeMae());
         }
         if (proprietarioDetails.getEndereco() != null) {
@@ -38,25 +38,25 @@ public class ProprietarioService {
             if (endereco == null) {
                 proprietario.setEndereco(enderecoDetails);
             } else {
-                if (enderecoDetails.getRua() != null) {
+                if (enderecoDetails.getRua() != "") {
                     endereco.setRua(enderecoDetails.getRua());
                 }
-                if (enderecoDetails.getNumero() != null) {
+                if (enderecoDetails.getNumero() != "") {
                     endereco.setNumero(enderecoDetails.getNumero());
                 }
-                if (enderecoDetails.getCidade() != null) {
+                if (enderecoDetails.getCidade() != "") {
                     endereco.setCidade(enderecoDetails.getCidade());
                 }
-                if (enderecoDetails.getUf() != null) {
+                if (enderecoDetails.getUf() != "") {
                     endereco.setUf(enderecoDetails.getUf());
                 }
-                if (enderecoDetails.getCep() != null) {
+                if (enderecoDetails.getCep() != "") {
                     endereco.setCep(enderecoDetails.getCep());
                 }
-                if (enderecoDetails.getBairro() != null) {
+                if (enderecoDetails.getBairro() != "") {
                     endereco.setBairro(enderecoDetails.getBairro());
                 }
-                if (enderecoDetails.getComplemento() != null) {
+                if (enderecoDetails.getComplemento() != "") {
                     endereco.setComplemento(enderecoDetails.getComplemento());
                 }
             }
