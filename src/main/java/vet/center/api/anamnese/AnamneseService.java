@@ -47,7 +47,7 @@ public class AnamneseService {
 
     public void deleteAnamnese(Long id) {anamneseRepository.delete(getAnamneseById(id));}
 
-    public List<Anamnese> getAnamnesesByAtendimentoId(Long atendimentoId) {
+    public Anamnese getAnamnesesByAtendimentoId(Long atendimentoId) {
         return anamneseRepository.findAnamneseByAtendimentoId(atendimentoId);
     }
 
