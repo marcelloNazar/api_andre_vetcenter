@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import vet.center.api.domain.proprietario.Proprietario;
 import vet.center.api.domain.proprietario.ProprietarioResponseDTO;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,5 +22,6 @@ public class AnimalResponseDTO {
     private String cor;
     private Temperamento temperamento;
     private Boolean castrado;
+    private LocalDateTime data;
     private Proprietario proprietario;
 }
