@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -15,7 +16,7 @@ public class AnimalDTO {
     private String raca;
     private Sexo sexo;
     private String peso;
-    private LocalDateTime idade;
+    private LocalDate nascimento;
     private String cor;
     private Temperamento temperamento;
     private Boolean castrado;
