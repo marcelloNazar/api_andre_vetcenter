@@ -114,12 +114,7 @@ public class AnimalService {
             }
             idade.append(meses).append(" mês").append(meses > 1 ? "es" : "");
         }
-        if (dias > 0) {
-            if (idade.length() > 0) {
-                idade.append(", ");
-            }
-            idade.append(dias).append(" dia").append(dias > 1 ? "s" : "");
-        }
+
 
         return idade.toString();
     }
