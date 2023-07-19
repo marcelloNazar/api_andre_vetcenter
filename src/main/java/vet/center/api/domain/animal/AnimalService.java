@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service;
 import vet.center.api.domain.proprietario.Proprietario;
 import vet.center.api.domain.proprietario.ProprietarioService;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,13 +25,14 @@ public class AnimalService {
         AnimalResponseDTO dto = new AnimalResponseDTO();
         BeanUtils.copyProperties(animal, dto);
         dto.setProprietario(proprietarioService.getProprietarioById(animal.getProprietario().getId()));
+        dto.setIdade(calcularIdade(animal.getNascimento()));
         return dto;
     }
 
     public AnimalResponseDTO createAnimal(AnimalDTO animalDTO) {
         Animal animal = new Animal();
         animal.setProprietario(proprietarioService.getProprietarioById(animalDTO.getProprietarioId()));
-        animal.setData(LocalDateTime.now());
+        animal.setData(LocalDate.now());
         BeanUtils.copyProperties(animalDTO, animal, "proprietarioId");
         animal = animalRepository.save(animal);
         return convertToDto(animal);
@@ -38,7 +40,7 @@ public class AnimalService {
 
     public AnimalResponseDTO updateAnimal(Long id, AnimalDTO animalDetails) {
         Animal animal = getAnimalById(id);
-        animal.setData(LocalDateTime.now());
+        animal.setData(LocalDate.now());
 
         if (animalDetails.getNome() != null) {
             animal.setNome(animalDetails.getNome());
@@ -54,11 +56,9 @@ public class AnimalService {
         }
         if (animalDetails.getPeso() != null) {
             animal.setPeso(animalDetails.getPeso());
-            animal.setData(LocalDateTime.now());
+            animal.setData(LocalDate.now());
         }
-        if (animalDetails.getIdade() != null) {
-            animal.setIdade(animalDetails.getIdade());
-        }
+
         if (animalDetails.getCor() != null) {
             animal.setCor(animalDetails.getCor());
         }
@@ -91,5 +91,36 @@ public class AnimalService {
 
     public List<AnimalResponseDTO> getAnimalsByProprietarioId(Long proprietarioId) {
         return animalRepository.findByProprietarioId(proprietarioId).stream().map(this::convertToDto).collect(Collectors.toList());
+    }
+
+    private String calcularIdade(LocalDate dataNascimento) {
+        if (dataNascimento == null) {
+            return null;
+        }
+
+        LocalDate dataAtual = LocalDate.now();
+        Period periodo = Period.between(dataNascimento, dataAtual);
+        int anos = periodo.getYears();
+        int meses = periodo.getMonths();
+        int dias = periodo.getDays();
+
+        StringBuilder idade = new StringBuilder();
+        if (anos > 0) {
+            idade.append(anos).append(" ano").append(anos > 1 ? "s" : "");
+        }
+        if (meses > 0) {
+            if (idade.length() > 0) {
+                idade.append(", ");
+            }
+            idade.append(meses).append(" mês").append(meses > 1 ? "es" : "");
+        }
+        if (dias > 0) {
+            if (idade.length() > 0) {
+                idade.append(", ");
+            }
+            idade.append(dias).append(" dia").append(dias > 1 ? "s" : "");
+        }
+
+        return idade.toString();
     }
 }

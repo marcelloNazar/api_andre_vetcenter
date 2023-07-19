@@ -8,6 +8,7 @@ import lombok.*;
 import vet.center.api.atendimento.Atendimento;
 import vet.center.api.domain.proprietario.Proprietario;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -29,11 +30,11 @@ public class Animal {
     private String raca;
     private Sexo sexo;
     private String peso;
-    private String idade;
+    private LocalDate nascimento;
     private String cor;
     private Temperamento temperamento;
     private Boolean castrado;
-    private LocalDateTime data;
+    private LocalDate data;
     @ManyToOne
     @JoinColumn(name = "proprietario_id", nullable = false)
     @JsonManagedReference
