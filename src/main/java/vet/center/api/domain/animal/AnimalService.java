@@ -58,6 +58,9 @@ public class AnimalService {
             animal.setPeso(animalDetails.getPeso());
             animal.setData(LocalDate.now());
         }
+        if (animalDetails.getNascimento() != null) {
+            animal.setNascimento(animalDetails.getNascimento());
+        }
 
         if (animalDetails.getCor() != null) {
             animal.setCor(animalDetails.getCor());
