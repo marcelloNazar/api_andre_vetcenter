@@ -154,7 +154,7 @@ public class AtendimentoService {
         Atendimento atendimento = getAtendimentoById(id);
         atendimento.setFinalizado(true);
 
-        boolean pagamentoAnterior = atendimento.getPago();
+        Boolean pagamentoAnterior = atendimento.getPago();
 
         if (atendimentoDTO.getVeterinarioId() != null) {
             User veterinario = userRepository.findById(atendimentoDTO.getVeterinarioId()).orElseThrow(() -> new UsernameNotFoundException("Veterinario não encontrado: "));
