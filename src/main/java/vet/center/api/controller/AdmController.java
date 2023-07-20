@@ -95,4 +95,12 @@ public class AdmController {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
         return ResponseEntity.ok(authService.getAllVeterinarios(pageable));
     }
+    @GetMapping("/usuarios")
+    public ResponseEntity<Page<User>> getAllUsuarios(
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(defaultValue = "id") String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        return ResponseEntity.ok(authService.getAllUsuarios(pageable));
+    }
 }
