@@ -166,8 +166,12 @@ public class AtendimentoService {
                 proprietario.setDivida(dividaAnterior - atendimento.getTotal().doubleValue());
             }
         }
-        if (!atendimentoDTO.getPago()) {
+        if (!atendimentoDTO.getPago() && dividaAnterior != null) {
             proprietario.setDivida(atendimento.getTotal().doubleValue() + dividaAnterior);
+            proprietarioRepository.save(proprietario);
+        }
+        if (!atendimentoDTO.getPago() && dividaAnterior == null) {
+            proprietario.setDivida(atendimento.getTotal().doubleValue());
             proprietarioRepository.save(proprietario);
         }
         return convertToDto(atendimento);
