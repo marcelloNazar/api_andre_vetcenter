@@ -53,6 +53,20 @@ public class AuthService {
                 .build();
     }
 
+    public User updateUser(Long id, RegisterRequest request) {
+        User user = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        user.setUsername(request.getUsername());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setNome(request.getNome());
+        user.setTelefone(request.getTelefone());
+        user.setCrmv(request.getCrmv());
+        user.setEmail(request.getEmail());
+        return repository.save(user);
+    }
+
+
     public Page<User> getAllVeterinarios(Pageable pageable) {
         String role = "USER";
         return repository.findAllByRole(role, pageable);
