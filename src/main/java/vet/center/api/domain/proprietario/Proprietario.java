@@ -29,7 +29,7 @@ public class Proprietario {
     private String nascimento;
     private String sexo;
     private String nomeMae;
-    private BigDecimal divida;
+    private double divida;
     @Embedded
     private Endereco endereco;
     @OneToMany(mappedBy = "proprietario", cascade = CascadeType.ALL)

@@ -150,21 +150,36 @@ public class AtendimentoService {
     }
 
     @Transactional
-    public AtendimentoResponseDTO  updateAtendimentoAdm(Long id, AtendimentoAdmDTO atendimentoDTO) {
+    public AtendimentoResponseDTO updateAtendimentoAdm(Long id, AtendimentoAdmDTO atendimentoDTO) {
         Atendimento atendimento = getAtendimentoById(id);
         atendimento.setFinalizado(true);
+
+        boolean pagamentoAnterior = atendimento.getPago();
+
         if (atendimentoDTO.getVeterinarioId() != null) {
             User veterinario = userRepository.findById(atendimentoDTO.getVeterinarioId()).orElseThrow(() -> new UsernameNotFoundException("Veterinario não encontrado: "));
             atendimento.setVeterinario(veterinario);
         }
+
         if (atendimentoDTO.getPago()) {
             atendimento.setPago(true);
+        } else {
+            atendimento.setPago(false);
         }
-        if (!atendimentoDTO.getPago()) {
+
+        if (pagamentoAnterior != atendimentoDTO.getPago()) {
             Proprietario proprietario = proprietarioService.getProprietarioById(atendimento.getProprietario().getId());
-            proprietario.setDivida(atendimento.getTotal());
+            double valorAtendimento = atendimento.getTotal().doubleValue();
+
+            if (atendimentoDTO.getPago()) {
+                proprietario.setDivida(proprietario.getDivida() - valorAtendimento);
+            } else {
+                proprietario.setDivida(proprietario.getDivida() + valorAtendimento);
+            }
+
             proprietarioRepository.save(proprietario);
         }
+
         return convertToDto(atendimento);
     }
 
