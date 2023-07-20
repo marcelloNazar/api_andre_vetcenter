@@ -169,7 +169,7 @@ public class AtendimentoService {
 
         if (pagamentoAnterior != atendimentoDTO.getPago()) {
             Proprietario proprietario = proprietarioService.getProprietarioById(atendimento.getProprietario().getId());
-            double valorAtendimento = atendimento.getTotal().doubleValue();
+            Double valorAtendimento = atendimento.getTotal().doubleValue();
 
             if (atendimentoDTO.getPago()) {
                 proprietario.setDivida(proprietario.getDivida() - valorAtendimento);
