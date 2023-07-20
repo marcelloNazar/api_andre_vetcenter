@@ -27,7 +27,6 @@ public class AuthService {
                 .telefone(request.getTelefone())
                 .crmv(request.getCrmv())
                 .email(request.getEmail())
-                .endereco(request.getEndereco())
                 .build();
 
         repository.save(user);

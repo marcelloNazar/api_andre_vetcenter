@@ -29,8 +29,6 @@ public class User implements UserDetails {
     private String email;
     private String telefone;
     private String crmv;
-    @Embedded
-    private Endereco endereco;
 
     @Override
     @JsonIgnore
