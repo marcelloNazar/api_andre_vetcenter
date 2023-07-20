@@ -82,11 +82,7 @@ public class AdmController {
         return ResponseEntity.ok(atendimentoService.updateAtendimentoAdm(id, atendimentoDTO));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAtendimento(@PathVariable Long id) {
-        atendimentoService.deleteAtendimento(id);
-        return ResponseEntity.noContent().build();
-    }
+
     @GetMapping("/veterinario")
     public ResponseEntity<Page<User>> getAllVeterinarios(
             @RequestParam(defaultValue = "0") Integer page,

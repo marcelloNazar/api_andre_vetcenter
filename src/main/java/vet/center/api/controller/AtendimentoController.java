@@ -53,4 +53,10 @@ public class AtendimentoController {
     public ResponseEntity<AtendimentoResponseDTO> updateAtendimento(@PathVariable(value = "id") Long id, @RequestBody AtendimentoUpdateDTO atendimentoDTO) {
         return ResponseEntity.ok(atendimentoService.updateAtendimento(id, atendimentoDTO));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAtendimento(@PathVariable Long id) {
+        atendimentoService.deleteAtendimento(id);
+        return ResponseEntity.noContent().build();
+    }
 }
