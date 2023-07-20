@@ -29,7 +29,6 @@ public class AuthController {
         return ResponseEntity.ok(service.authenticate(request));
     }
 
-
     @PutMapping("/{id}")
     public ResponseEntity<User> alter(@PathVariable Long id, @RequestBody RegisterRequest request) {
         return ResponseEntity.ok(service.updateUser(id, request));

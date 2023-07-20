@@ -68,7 +68,7 @@ public class AuthService {
 
 
     public Page<User> getAllVeterinarios(Pageable pageable) {
-        String role = "USER";
+        Role role = Role.USER;
         return repository.findAllByRole(role, pageable);
     }
 
