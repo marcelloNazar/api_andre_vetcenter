@@ -170,10 +170,12 @@ public class AtendimentoService {
         if (!atendimentoDTO.getPago() && dividaAnterior != null) {
             proprietario.setDivida(atendimento.getTotal().doubleValue() + dividaAnterior);
             proprietarioRepository.save(proprietario);
+            atendimento.setPago(false);
         }
         if (!atendimentoDTO.getPago() && dividaAnterior == null) {
             proprietario.setDivida(atendimento.getTotal().doubleValue());
             proprietarioRepository.save(proprietario);
+            atendimento.setPago(false);
         }
         return convertToDto(atendimento);
     }
