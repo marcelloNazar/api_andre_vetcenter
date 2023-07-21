@@ -34,7 +34,7 @@ public class AnimalController {
     @GetMapping
     public ResponseEntity<Page<AnimalResponseDTO>> getAllAnimals(
             @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(defaultValue = "500") Integer size,
             @RequestParam(defaultValue = "id") String sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
         return ResponseEntity.ok(animalService.getAllAnimals(pageable));

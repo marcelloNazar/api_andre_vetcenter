@@ -35,16 +35,16 @@ public class AdmController {
     @GetMapping
     public ResponseEntity<Page<AtendimentoResponseDTO>> getAllAtendimentos(
             @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "50") Integer size,
+            @RequestParam(defaultValue = "500") Integer size,
             @RequestParam(defaultValue = "id") String sort) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sort));
         return ResponseEntity.ok(atendimentoService.getAllAtendimentosAdm(pageable));
     }
 
     @GetMapping("/concluidos")
     public ResponseEntity<Page<AtendimentoResponseDTO>> getAllAtendimentosConcluidos(
             @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "50") Integer size,
+            @RequestParam(defaultValue = "500") Integer size,
             @RequestParam(defaultValue = "id") String sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
         return ResponseEntity.ok(atendimentoService.getAllAtendimentosConcluidos(pageable));
@@ -53,7 +53,7 @@ public class AdmController {
     @GetMapping("/finalizados")
     public ResponseEntity<Page<AtendimentoResponseDTO>> getAllAtendimentosFinalizados(
             @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "50") Integer size,
+            @RequestParam(defaultValue = "500") Integer size,
             @RequestParam(defaultValue = "id") String sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
         return ResponseEntity.ok(atendimentoService.getAllAtendimentosFinalizados(pageable));
@@ -62,7 +62,7 @@ public class AdmController {
     @GetMapping("/pagos")
     public ResponseEntity<Page<AtendimentoResponseDTO>> getAllAtendimentosPagos(
             @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "50") Integer size,
+            @RequestParam(defaultValue = "500") Integer size,
             @RequestParam(defaultValue = "id") String sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
         return ResponseEntity.ok(atendimentoService.getAllAtendimentosPagos(pageable));
@@ -71,7 +71,7 @@ public class AdmController {
     @GetMapping("/naopagos")
     public ResponseEntity<Page<AtendimentoResponseDTO>> getAllAtendimentosPagosFalse(
             @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "50") Integer size,
+            @RequestParam(defaultValue = "500") Integer size,
             @RequestParam(defaultValue = "id") String sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
         return ResponseEntity.ok(atendimentoService.getAllAtendimentosPagosFalse(pageable));
@@ -86,7 +86,7 @@ public class AdmController {
     @GetMapping("/veterinario")
     public ResponseEntity<Page<User>> getAllVeterinarios(
             @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(defaultValue = "500") Integer size,
             @RequestParam(defaultValue = "id") String sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
         return ResponseEntity.ok(authService.getAllVeterinarios(pageable));
@@ -94,7 +94,7 @@ public class AdmController {
     @GetMapping("/usuarios")
     public ResponseEntity<Page<User>> getAllUsuarios(
             @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(defaultValue = "50") Integer size,
             @RequestParam(defaultValue = "id") String sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
         return ResponseEntity.ok(authService.getAllUsuarios(pageable));

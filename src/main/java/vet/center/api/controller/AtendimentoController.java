@@ -30,7 +30,7 @@ public class AtendimentoController {
     @GetMapping("/lista")
     public ResponseEntity<Page<AtendimentoResponseDTO>> getAllAtendimentos(
             @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(defaultValue = "50") Integer size,
             @RequestParam(defaultValue = "id") String sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
         return ResponseEntity.ok(atendimentoService.getAllAtendimentos(pageable));
@@ -38,7 +38,7 @@ public class AtendimentoController {
     @GetMapping("/concluidos")
     public ResponseEntity<Page<AtendimentoResponseDTO>> Concluidos(
             @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(defaultValue = "50") Integer size,
             @RequestParam(defaultValue = "id") String sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
         return ResponseEntity.ok(atendimentoService.getAllAtendimentosConcluidosUser(pageable));

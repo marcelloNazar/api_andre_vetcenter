@@ -29,7 +29,7 @@ public class ProprietarioController {
     @GetMapping
     public ResponseEntity<Page<Proprietario>> listar(
             @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "50") Integer size,
+            @RequestParam(defaultValue = "1000") Integer size,
             @RequestParam(defaultValue = "id") String sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
         return ResponseEntity.ok(proprietarioService.getAllProprietarios(pageable));
