@@ -19,6 +19,7 @@ import vet.center.api.user.User;
 import vet.center.api.user.UserRepository;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
@@ -87,7 +88,7 @@ public class AtendimentoService {
         atendimento.setPago(false);
         atendimento.setAnimal(animal);
         atendimento.setProprietario(animal.getProprietario());
-        atendimento.setDateTime(LocalDateTime.now());
+        atendimento.setData(LocalDate.now());
         atendimento = atendimentoRepository.save(atendimento);
 
         return convertToDto(atendimento);
@@ -107,7 +108,7 @@ public class AtendimentoService {
         atendimento.setPago(false);
         atendimento.setAnimal(animal);
         atendimento.setProprietario(animal.getProprietario());
-        atendimento.setDateTime(LocalDateTime.now());
+        atendimento.setData(LocalDate.now());
         atendimento = atendimentoRepository.save(atendimento);
 
         return convertToDto(atendimento);

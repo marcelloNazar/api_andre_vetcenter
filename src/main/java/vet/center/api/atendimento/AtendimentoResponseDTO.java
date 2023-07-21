@@ -10,6 +10,7 @@ import vet.center.api.domain.servico.ServicoDTO;
 import vet.center.api.user.User;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -25,4 +26,5 @@ public class AtendimentoResponseDTO {
     private Proprietario proprietario;
     private List<ProdutoDTO> produtos;
     private List<ServicoDTO> servicos;
+    private LocalDate data;
 }

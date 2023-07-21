@@ -10,6 +10,7 @@ import vet.center.api.domain.servico.AtendimentoServico;
 import vet.center.api.user.User;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,7 @@ public class Atendimento {
     @OneToMany(mappedBy = "atendimento")
     @JsonManagedReference
     private List<AtendimentoServico> atendimentoServicos = new ArrayList<>();
-    private LocalDateTime dateTime;
+    private LocalDate data;
     private Boolean concluido;
     private Boolean pago;
     private Boolean finalizado;
