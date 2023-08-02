@@ -13,6 +13,8 @@ import vet.center.api.atendimento.*;
 import vet.center.api.config.AuthService;
 import vet.center.api.user.User;
 
+import java.util.List;
+
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
@@ -26,6 +28,26 @@ public class AdmController {
 
     @Autowired
     private AuthService authService;
+
+    @GetMapping("/datatrue")
+    public Page<AtendimentoResponseDTO> getFinancesByMonth(
+            @RequestParam("mes") int month, @RequestParam("ano") int year,
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "500") Integer size,
+            @RequestParam(defaultValue = "id") String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sort));
+        return atendimentoService.getFinancesByMonthPago(month, year, pageable);
+    }
+
+    @GetMapping("/datafalse")
+    public Page<AtendimentoResponseDTO> getFinancesByMonthpagoFalse(
+            @RequestParam("mes") int month, @RequestParam("ano") int year,
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "500") Integer size,
+            @RequestParam(defaultValue = "id") String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sort));
+        return atendimentoService.getFinancesByMonthPagoFalse(month, year, pageable);
+    }
 
     @PostMapping
     public ResponseEntity<AtendimentoResponseDTO> createAtendimento(@RequestBody AtendimentoDTO atendimentoDTO) {

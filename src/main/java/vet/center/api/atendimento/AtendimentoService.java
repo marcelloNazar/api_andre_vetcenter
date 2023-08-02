@@ -21,6 +21,8 @@ import vet.center.api.user.UserRepository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -93,6 +95,57 @@ public class AtendimentoService {
 
         return convertToDto(atendimento);
     }
+
+    public Page<AtendimentoResponseDTO> getFinancesByMonthPago(Integer month, Integer year, Pageable pageable) {
+        // Se nenhum mês e ano forem informados, usa o mês atual.
+        if (month == null || year == null) {
+            LocalDate currentDate = LocalDate.now();
+            month = currentDate.getMonthValue();
+            year = currentDate.getYear();
+        }
+
+        // Verifica se o mês e ano informados são válidos.
+        if (month < 1 || month > 12 || year < 0) {
+            throw new IllegalArgumentException("Mês ou ano inválido.");
+        }
+
+        // Cria um objeto YearMonth para o mês e ano informados.
+        YearMonth selectedMonth = YearMonth.of(year, month);
+
+        // Calcula o primeiro e o último dia do mês.
+        LocalDate startOfMonth = selectedMonth.atDay(1);
+        LocalDate endOfMonth = selectedMonth.atEndOfMonth();
+
+        // Chama o repositório para obter as finanças filtradas pelo mês e ano.
+        return atendimentoRepository.findAllByDataBetweenAndPago(startOfMonth, endOfMonth, pageable).map(this::convertToDto);
+    }
+
+    public Page<AtendimentoResponseDTO> getFinancesByMonthPagoFalse(Integer month, Integer year, Pageable pageable) {
+        // Se nenhum mês e ano forem informados, usa o mês atual.
+        if (month == null || year == null) {
+            LocalDate currentDate = LocalDate.now();
+            month = currentDate.getMonthValue();
+            year = currentDate.getYear();
+        }
+
+        // Verifica se o mês e ano informados são válidos.
+        if (month < 1 || month > 12 || year < 0) {
+            throw new IllegalArgumentException("Mês ou ano inválido.");
+        }
+
+        // Cria um objeto YearMonth para o mês e ano informados.
+        YearMonth selectedMonth = YearMonth.of(year, month);
+
+        // Calcula o primeiro e o último dia do mês.
+        LocalDate startOfMonth = selectedMonth.atDay(1);
+        LocalDate endOfMonth = selectedMonth.atEndOfMonth();
+
+        // Chama o repositório para obter as finanças filtradas pelo mês e ano.
+        return atendimentoRepository.findAllByDataBetweenAndPagoFalse(startOfMonth, endOfMonth, pageable)
+                .map(this::convertToDto);
+    }
+
+
 
     @Transactional
     public AtendimentoResponseDTO  createAtendimentoVeterinario(AtendimentoDTO atendimentoDTO) {
