@@ -24,4 +24,5 @@ public interface AtendimentoRepository extends JpaRepository<Atendimento, Long> 
     Page<Atendimento> findAllByDataBetweenAndPago(LocalDate startOfMonth, LocalDate endOfMonth, Pageable pageable);
     @Query("SELECT a FROM Atendimento a WHERE a.data BETWEEN :startOfMonth AND :endOfMonth AND a.pago = false")
     Page<Atendimento> findAllByDataBetweenAndPagoFalse(LocalDate startOfMonth, LocalDate endOfMonth, Pageable pageable);
+    Page<Atendimento> findAllByDataBetween(LocalDate startOfMonth, LocalDate endOfMonth, Pageable pageable);
 }

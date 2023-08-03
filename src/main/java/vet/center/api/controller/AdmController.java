@@ -29,8 +29,19 @@ public class AdmController {
     @Autowired
     private AuthService authService;
 
-    @GetMapping("/datatrue")
+    @GetMapping("/data")
     public Page<AtendimentoResponseDTO> getFinancesByMonth(
+            @RequestParam("mes") int month, @RequestParam("ano") int year,
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "500") Integer size,
+            @RequestParam(defaultValue = "id") String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sort));
+        return atendimentoService.getFinancesByMonth(month, year, pageable);
+    }
+
+
+    @GetMapping("/datatrue")
+    public Page<AtendimentoResponseDTO> getFinancesByMonthPago(
             @RequestParam("mes") int month, @RequestParam("ano") int year,
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "500") Integer size,
@@ -75,9 +86,9 @@ public class AdmController {
     @GetMapping("/finalizados")
     public ResponseEntity<Page<AtendimentoResponseDTO>> getAllAtendimentosFinalizados(
             @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "500") Integer size,
+            @RequestParam(defaultValue = "10") Integer size,
             @RequestParam(defaultValue = "id") String sort) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sort));
         return ResponseEntity.ok(atendimentoService.getAllAtendimentosFinalizados(pageable));
     }
 
@@ -93,9 +104,9 @@ public class AdmController {
     @GetMapping("/naopagos")
     public ResponseEntity<Page<AtendimentoResponseDTO>> getAllAtendimentosPagosFalse(
             @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "500") Integer size,
+            @RequestParam(defaultValue = "10") Integer size,
             @RequestParam(defaultValue = "id") String sort) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sort));
         return ResponseEntity.ok(atendimentoService.getAllAtendimentosPagosFalse(pageable));
     }
 

@@ -96,6 +96,31 @@ public class AtendimentoService {
         return convertToDto(atendimento);
     }
 
+    public Page<AtendimentoResponseDTO> getFinancesByMonth(Integer month, Integer year, Pageable pageable) {
+        // Se nenhum mês e ano forem informados, usa o mês atual.
+        if (month == null || year == null) {
+            LocalDate currentDate = LocalDate.now();
+            month = currentDate.getMonthValue();
+            year = currentDate.getYear();
+        }
+
+        // Verifica se o mês e ano informados são válidos.
+        if (month < 1 || month > 12 || year < 0) {
+            throw new IllegalArgumentException("Mês ou ano inválido.");
+        }
+
+        // Cria um objeto YearMonth para o mês e ano informados.
+        YearMonth selectedMonth = YearMonth.of(year, month);
+
+        // Calcula o primeiro e o último dia do mês.
+        LocalDate startOfMonth = selectedMonth.atDay(1);
+        LocalDate endOfMonth = selectedMonth.atEndOfMonth();
+
+        // Chama o repositório para obter as finanças filtradas pelo mês e ano.
+        return atendimentoRepository.findAllByDataBetween(startOfMonth, endOfMonth, pageable)
+                .map(this::convertToDto);
+    }
+
     public Page<AtendimentoResponseDTO> getFinancesByMonthPago(Integer month, Integer year, Pageable pageable) {
         // Se nenhum mês e ano forem informados, usa o mês atual.
         if (month == null || year == null) {
@@ -207,28 +232,32 @@ public class AtendimentoService {
     public AtendimentoResponseDTO  updateAtendimentoAdm(Long id, AtendimentoAdmDTO atendimentoDTO) {
         Atendimento atendimento = getAtendimentoById(id);
         atendimento.setFinalizado(true);
+
         if (atendimentoDTO.getVeterinarioId() != null) {
-            User veterinario = userRepository.findById(atendimentoDTO.getVeterinarioId()).orElseThrow(() -> new UsernameNotFoundException("Veterinario não encontrado: "));
+            User veterinario = userRepository.findById(atendimentoDTO.getVeterinarioId())
+                    .orElseThrow(() -> new UsernameNotFoundException("Veterinario não encontrado: "));
             atendimento.setVeterinario(veterinario);
         }
 
         Proprietario proprietario = proprietarioService.getProprietarioById(atendimento.getProprietario().getId());
         Double dividaAnterior = proprietario.getDivida();
+        boolean atendimentoFoiPagoAntes = atendimento.getPago(); // Armazena o estado do pagamento antes da atualização.
+
         if (atendimentoDTO.getPago()) {
             atendimento.setPago(true);
-            if(dividaAnterior != null && dividaAnterior > 0 ){
+            if (!atendimentoFoiPagoAntes) {
                 proprietario.setDivida(dividaAnterior - atendimento.getTotal().doubleValue());
             }
-        }
-        if (!atendimentoDTO.getPago() && dividaAnterior != null) {
-            proprietario.setDivida(atendimento.getTotal().doubleValue() + dividaAnterior);
-            proprietarioRepository.save(proprietario);
+        } else {
             atendimento.setPago(false);
+            if (atendimentoFoiPagoAntes) {
+                proprietario.setDivida(atendimento.getTotal().doubleValue() + dividaAnterior);
+            }
         }
-        if (!atendimentoDTO.getPago() && dividaAnterior == null) {
-            proprietario.setDivida(atendimento.getTotal().doubleValue());
+
+        // Salva o proprietário apenas se houver alteração na dívida.
+        if (atendimento.getPago() != atendimentoFoiPagoAntes) {
             proprietarioRepository.save(proprietario);
-            atendimento.setPago(false);
         }
         return convertToDto(atendimento);
     }
