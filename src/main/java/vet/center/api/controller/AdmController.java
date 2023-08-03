@@ -33,7 +33,7 @@ public class AdmController {
     public Page<AtendimentoResponseDTO> getFinancesByMonth(
             @RequestParam("mes") int month, @RequestParam("ano") int year,
             @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "500") Integer size,
+            @RequestParam(defaultValue = "1000") Integer size,
             @RequestParam(defaultValue = "id") String sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sort));
         return atendimentoService.getFinancesByMonth(month, year, pageable);
@@ -44,7 +44,7 @@ public class AdmController {
     public Page<AtendimentoResponseDTO> getFinancesByMonthPago(
             @RequestParam("mes") int month, @RequestParam("ano") int year,
             @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "500") Integer size,
+            @RequestParam(defaultValue = "1000") Integer size,
             @RequestParam(defaultValue = "id") String sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sort));
         return atendimentoService.getFinancesByMonthPago(month, year, pageable);
@@ -54,7 +54,7 @@ public class AdmController {
     public Page<AtendimentoResponseDTO> getFinancesByMonthpagoFalse(
             @RequestParam("mes") int month, @RequestParam("ano") int year,
             @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "500") Integer size,
+            @RequestParam(defaultValue = "1000") Integer size,
             @RequestParam(defaultValue = "id") String sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sort));
         return atendimentoService.getFinancesByMonthPagoFalse(month, year, pageable);
