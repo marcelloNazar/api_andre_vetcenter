@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import vet.center.api.domain.animal.Animal;
+import vet.center.api.domain.pagamento.Pagamento;
 import vet.center.api.domain.produto.AtendimentoProduto;
 import vet.center.api.domain.proprietario.Proprietario;
 import vet.center.api.domain.servico.AtendimentoServico;
@@ -43,6 +44,9 @@ public class Atendimento {
     @OneToMany(mappedBy = "atendimento")
     @JsonManagedReference
     private List<AtendimentoServico> atendimentoServicos = new ArrayList<>();
+    @OneToMany(mappedBy = "atendimento")
+    @JsonManagedReference
+    private List<Pagamento> pagamentos = new ArrayList<>();
     private LocalDate data;
     private Boolean concluido;
     private Boolean pago;

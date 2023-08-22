@@ -1,9 +1,13 @@
 package vet.center.api.domain.proprietario;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import vet.center.api.domain.endereco.Endereco;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProprietarioDTO {
     private String nome;
     private String telefone;
