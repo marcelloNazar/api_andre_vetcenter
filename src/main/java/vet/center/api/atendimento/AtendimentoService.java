@@ -232,33 +232,6 @@ public class AtendimentoService {
     public AtendimentoResponseDTO  updateAtendimentoAdm(Long id, AtendimentoAdmDTO atendimentoDTO) {
         Atendimento atendimento = getAtendimentoById(id);
         atendimento.setFinalizado(true);
-
-        if (atendimentoDTO.getVeterinarioId() != null) {
-            User veterinario = userRepository.findById(atendimentoDTO.getVeterinarioId())
-                    .orElseThrow(() -> new UsernameNotFoundException("Veterinario não encontrado: "));
-            atendimento.setVeterinario(veterinario);
-        }
-
-        Proprietario proprietario = proprietarioService.getProprietarioById(atendimento.getProprietario().getId());
-        Double dividaAnterior = proprietario.getDivida();
-        boolean atendimentoFoiPagoAntes = atendimento.getPago(); // Armazena o estado do pagamento antes da atualização.
-
-        if (atendimentoDTO.getPago()) {
-            atendimento.setPago(true);
-            if (!atendimentoFoiPagoAntes) {
-                proprietario.setDivida(dividaAnterior - atendimento.getTotal().doubleValue());
-            }
-        } else {
-            atendimento.setPago(false);
-            if (atendimentoFoiPagoAntes) {
-                proprietario.setDivida(atendimento.getTotal().doubleValue() + dividaAnterior);
-            }
-        }
-
-        // Salva o proprietário apenas se houver alteração na dívida.
-        if (atendimento.getPago() != atendimentoFoiPagoAntes) {
-            proprietarioRepository.save(proprietario);
-        }
         return convertToDto(atendimento);
     }
 
