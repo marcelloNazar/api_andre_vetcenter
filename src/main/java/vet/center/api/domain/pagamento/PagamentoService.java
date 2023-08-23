@@ -28,11 +28,16 @@ public class PagamentoService {
         if (atendimento.getTotalPago() != null) {
             BigDecimal novoTotal = BigDecimal.valueOf(atendimento.getTotalPago().doubleValue() + pagamentoDTO.getValor().doubleValue());
             atendimento.setTotalPago(novoTotal);
+            atendimentoRepository.save(atendimento);
         } else {
             BigDecimal novoTotal = BigDecimal.valueOf(pagamentoDTO.getValor().doubleValue());
+            atendimento.setTotalPago(novoTotal);
+            atendimentoRepository.save(atendimento);
         }
-
-        atendimentoRepository.save(atendimento);
+        if(atendimento.getTotal().doubleValue() - atendimento.getTotalPago().doubleValue() < 1){
+            atendimento.setPago(true);
+            atendimentoRepository.save(atendimento);
+        }
         pagamento.setAtendimento(atendimento);
         BeanUtils.copyProperties(pagamentoDTO, pagamento, "atendimentoId");
 
