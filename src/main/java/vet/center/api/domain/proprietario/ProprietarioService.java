@@ -22,6 +22,12 @@ public class ProprietarioService {
         if (proprietarioDetails.getTelefone() != "") {
             proprietario.setTelefone(proprietarioDetails.getTelefone());
         }
+        if (proprietarioDetails.getTelefone1() != "") {
+            proprietario.setTelefone1(proprietarioDetails.getTelefone1());
+        }
+        if (proprietarioDetails.getTelefone2() != "") {
+            proprietario.setTelefone2(proprietarioDetails.getTelefone2());
+        }
         if (proprietarioDetails.getCpf() != "") {
             proprietario.setCpf(proprietarioDetails.getCpf());
         }
