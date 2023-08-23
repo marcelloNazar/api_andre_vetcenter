@@ -34,6 +34,9 @@ public class ProprietarioService {
         if (proprietarioDetails.getNascimento() != "") {
             proprietario.setNascimento(proprietarioDetails.getNascimento());
         }
+        if (proprietarioDetails.getSexo() != "") {
+            proprietario.setSexo(proprietarioDetails.getSexo());
+        }
         if (proprietarioDetails.getNomeMae() != "") {
             proprietario.setNomeMae(proprietarioDetails.getNomeMae());
         }
