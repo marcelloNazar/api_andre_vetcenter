@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import vet.center.api.domain.animal.Animal;
+import vet.center.api.domain.pagamento.Pagamento;
 import vet.center.api.domain.produto.ProdutoDTO;
 import vet.center.api.domain.proprietario.Proprietario;
 import vet.center.api.domain.servico.ServicoDTO;
@@ -19,6 +20,7 @@ import java.util.List;
 public class AtendimentoResponseDTO {
     private Long id;
     private BigDecimal total;
+    private BigDecimal totalPago;
     private Boolean pago;
     private Boolean concluido;
     private User veterinario;
@@ -26,5 +28,7 @@ public class AtendimentoResponseDTO {
     private Proprietario proprietario;
     private List<ProdutoDTO> produtos;
     private List<ServicoDTO> servicos;
+    private List<Pagamento> pagamentos;
     private LocalDate data;
+    private String dataFechamento;
 }

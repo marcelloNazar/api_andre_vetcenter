@@ -48,9 +48,11 @@ public class Atendimento {
     @JsonManagedReference
     private List<Pagamento> pagamentos = new ArrayList<>();
     private LocalDate data;
+    private String dataFechamento;
     private Boolean concluido;
     private Boolean pago;
     private Boolean finalizado;
     private BigDecimal total;
+    private BigDecimal totalPago;
 
 }

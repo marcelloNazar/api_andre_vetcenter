@@ -19,9 +19,11 @@ import vet.center.api.user.User;
 import vet.center.api.user.UserRepository;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -232,6 +234,10 @@ public class AtendimentoService {
     public AtendimentoResponseDTO  updateAtendimentoAdm(Long id, AtendimentoAdmDTO atendimentoDTO) {
         Atendimento atendimento = getAtendimentoById(id);
         atendimento.setFinalizado(true);
+        Date dataAtual = new Date();
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        String dataFormatada = formato.format(dataAtual);
+        atendimento.setDataFechamento(dataFormatada);
         return convertToDto(atendimento);
     }
 

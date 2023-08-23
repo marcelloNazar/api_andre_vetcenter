@@ -25,8 +25,8 @@ public class PagamentoService {
     public Pagamento criarPagamento(PagamentoDTO pagamentoDTO) {
         Pagamento pagamento = new Pagamento();
         Atendimento atendimento = atendimentoService.getAtendimentoById(pagamentoDTO.getAtendimentoId());
-        BigDecimal novoTotal = BigDecimal.valueOf(atendimento.getTotal().doubleValue() - pagamentoDTO.getValor().doubleValue());
-        atendimento.setTotal(novoTotal);
+        BigDecimal novoTotal = BigDecimal.valueOf(atendimento.getTotalPago().doubleValue() + pagamentoDTO.getValor().doubleValue());
+        atendimento.setTotalPago(novoTotal);
         atendimentoRepository.save(atendimento);
         pagamento.setAtendimento(atendimento);
         BeanUtils.copyProperties(pagamentoDTO, pagamento, "atendimentoId");
