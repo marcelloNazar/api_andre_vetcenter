@@ -197,9 +197,6 @@ public class AtendimentoService {
 
         String currentUserName = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        if (!atendimento.getVeterinario().getUsername().equals(currentUserName)) {
-            throw new RuntimeException("Você não tem permissão para atualizar este atendimento.");
-        }
 
         atendimentoProdutoRepository.deleteByAtendimento(atendimento);
         atendimentoServicoRepository.deleteByAtendimento(atendimento);
