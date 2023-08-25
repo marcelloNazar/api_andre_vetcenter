@@ -119,7 +119,7 @@ public class AtendimentoService {
         LocalDate endOfMonth = selectedMonth.atEndOfMonth();
 
         // Chama o repositório para obter as finanças filtradas pelo mês e ano.
-        return atendimentoRepository.findAllByDataBetween(startOfMonth, endOfMonth, pageable)
+        return atendimentoRepository.findAllByDataBetweenAndFinalizado(startOfMonth, endOfMonth, pageable)
                 .map(this::convertToDto);
     }
 
@@ -168,7 +168,7 @@ public class AtendimentoService {
         LocalDate endOfMonth = selectedMonth.atEndOfMonth();
 
         // Chama o repositório para obter as finanças filtradas pelo mês e ano.
-        return atendimentoRepository.findAllByDataBetweenAndPagoFalse(startOfMonth, endOfMonth, pageable)
+        return atendimentoRepository.findAllByDataBetweenAndPagoFalseAndFinalizadoTrue(startOfMonth, endOfMonth, pageable)
                 .map(this::convertToDto);
     }
 
