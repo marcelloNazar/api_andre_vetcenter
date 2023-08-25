@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import vet.center.api.domain.animal.Animal;
 import vet.center.api.domain.animal.AnimalService;
 import vet.center.api.domain.produto.*;
-import vet.center.api.domain.proprietario.Proprietario;
 import vet.center.api.domain.proprietario.ProprietarioRepository;
 import vet.center.api.domain.proprietario.ProprietarioService;
 import vet.center.api.domain.servico.*;
@@ -21,10 +20,8 @@ import vet.center.api.user.UserRepository;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.Date;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -119,7 +116,7 @@ public class AtendimentoService {
         LocalDate endOfMonth = selectedMonth.atEndOfMonth();
 
         // Chama o repositório para obter as finanças filtradas pelo mês e ano.
-        return atendimentoRepository.findAllByDataBetweenAndFinalizado(startOfMonth, endOfMonth, pageable)
+        return atendimentoRepository.findAllByDataBetweenAndFinalizadoTrue(startOfMonth, endOfMonth, pageable)
                 .map(this::convertToDto);
     }
 
