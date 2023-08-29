@@ -191,7 +191,38 @@ public class AtendimentoService {
         return convertToDto(atendimento);
     }
 
+    @Transactional
+    public AtendimentoResponseDTO updateAtendimento(Long id, AtendimentoUpdateDTO atendimentoDTO) {
+        Atendimento atendimento = getAtendimentoById(id);
 
+        String currentUserName = SecurityContextHolder.getContext().getAuthentication().getName();
+
+
+        atendimentoProdutoRepository.deleteByAtendimento(atendimento);
+        atendimentoServicoRepository.deleteByAtendimento(atendimento);
+
+        BigDecimal total = BigDecimal.ZERO;
+        for (AtendimentoProdutoDTO produtoDto : atendimentoDTO.getAtendimentoProdutos()) {
+            Produto produto = produtoService.getProdutoById(produtoDto.getProdutoId());
+            AtendimentoProduto atendimentoProduto = new AtendimentoProduto(atendimento, produto, produtoDto.getQuantidade());
+            atendimentoProduto = atendimentoProdutoRepository.save(atendimentoProduto);
+            total = total.add(produto.getValor().multiply(new BigDecimal(atendimentoProduto.getQuantidade())));
+        }
+        for (AtendimentoServicoDTO servicoDto : atendimentoDTO.getAtendimentoServicos()) {
+            Servico servico = servicoService.getServicoById(servicoDto.getServicoId());
+            AtendimentoServico atendimentoServico = new AtendimentoServico(atendimento, servico, servicoDto.getQuantidade());
+            atendimentoServico = atendimentoServicoRepository.save(atendimentoServico);
+            total = total.add(servico.getValor().multiply(new BigDecimal(atendimentoServico.getQuantidade())));
+        }
+        atendimento.setTotal(total);
+
+        atendimento.setConcluido(true);
+
+
+        atendimentoRepository.save(atendimento);
+
+        return convertToDto(atendimento);
+    }
 
     @Transactional
     public AtendimentoResponseDTO  updateAtendimentoAdm(Long id, AtendimentoAdmDTO atendimentoDTO) {
